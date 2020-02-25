@@ -45,5 +45,28 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/pointage?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
+
+
+    <property name="hibernate.enable_lazy_load_no_trans">true</property>
+    <property name="hibernate.show_sql">false</property>
+    <property name="hibernate.format_sql">false</property>
+    <property name="hibernate.use_sql_comments">false</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <!-- Pool de connexion : ici C3P0 qui est d��clar�� -->
+    <property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+    <!--d��sactiver la cache  deuxi��me niveau -->
+    <property name="hibernate.cache.provider_class">org.hibernate.cache.internal.NoCachingRegionFactory</property>
+    <property name="hibernate.jdbc.batch_size">0</property>
+    <property name="hibernate.max_fetch_depth">1</property>
+    <property name="hibernate.transaction.auto_close_session">true</property>
+    <property name="hibernate.transaction.flush_before_completion">true</property>
+    <property name="hibernate.cache.use_second_level_cache">false</property>
+    <property name="hibernate.connection.autocommit">false</property>
+    <property name="hibernate.connection.release_mode">after_transaction</property>
+    <property name="cachePrepStmts">true</property>
+    <property name="prepStmtCacheSize">512</property>
+    <property name="useServerPreparedStmts">false</property>
+    <property name="c3p0.min_size">1</property>
+    <property name="c3p0.max_size">500</property>
   </session-factory>
 </hibernate-configuration>

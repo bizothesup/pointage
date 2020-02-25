@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 f?vr. 2020 ? 09:43:03 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="net.horus.pointage.models.EmployeSortiePointage" table="employe_sortie_pointage" catalog="pointage" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="employes" class="net.horus.pointage.models.Employes" fetch="select">
+            <column name="employe_id" />
+        </many-to-one>
+        <property name="jour" type="date">
+            <column name="jour" length="10" />
+        </property>
+        <property name="heureSortie" type="time">
+            <column name="heure_sortie" length="8" />
+        </property>
+        <property name="heureRetour" type="time">
+            <column name="heure_retour" length="8" />
+        </property>
+        <property name="numeroCarte" type="string">
+            <column name="numero_carte" length="50" />
+        </property>
+        <property name="marticuleEmploye" type="string">
+            <column name="marticule_employe" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

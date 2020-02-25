@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 f?vr. 2020 ? 09:43:03 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="net.horus.pointage.models.Employes" table="employes" catalog="pointage" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="marticule" type="string">
+            <column name="marticule" length="50" unique="true" />
+        </property>
+        <property name="nom" type="string">
+            <column name="nom" length="50" />
+        </property>
+        <property name="prenom" type="string">
+            <column name="prenom" length="50" />
+        </property>
+        <property name="dateNaissance" type="date">
+            <column name="date_naissance" length="10" />
+        </property>
+        <property name="lieuNaissance" type="string">
+            <column name="lieu_naissance" length="50" />
+        </property>
+        <property name="profession" type="string">
+            <column name="profession" length="50" />
+        </property>
+        <property name="service" type="string">
+            <column name="service" length="50" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" unique="true" />
+        </property>
+        <property name="adresse" type="string">
+            <column name="adresse" length="50" />
+        </property>
+        <property name="photo" type="string">
+            <column name="photo" length="50" />
+        </property>
+        <set name="groupes" table="employe_groupe" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="employe_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="net.horus.pointage.models.Groupe">
+                <column name="groupe_id" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="employeePointages" table="employee_pointage" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="employe_id" />
+            </key>
+            <one-to-many class="net.horus.pointage.models.EmployeePointage" />
+        </set>
+        <set name="cardRfids" table="card_rfid" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="employe_id" not-null="true" />
+            </key>
+            <one-to-many class="net.horus.pointage.models.CardRfid" />
+        </set>
+        <set name="employeSortiePointages" table="employe_sortie_pointage" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="employe_id" />
+            </key>
+            <one-to-many class="net.horus.pointage.models.EmployeSortiePointage" />
+        </set>
+    </class>
+</hibernate-mapping>
