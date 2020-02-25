@@ -13,7 +13,7 @@ public class HibernateUtils {
     private static ThreadLocal sessiontThreadLocal = new ThreadLocal();
     private String driverJdbc = "mysql";
 
-    private Session getSession() throws NamingException {
+    public  Session getSession() throws NamingException {
         Session session = (Session) sessiontThreadLocal.get();
         if(session == null){
             configuration();
@@ -42,6 +42,8 @@ public class HibernateUtils {
       paramConfig.addClass(Groupe.class);
       paramConfig.addClass(PointageParam.class);
       paramConfig.addClass(Services.class);
+      paramConfig.addClass(Users.class);
+      paramConfig.addClass(Role.class);
       return paramConfig;
     }
 

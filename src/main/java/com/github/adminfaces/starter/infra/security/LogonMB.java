@@ -1,6 +1,10 @@
 package com.github.adminfaces.starter.infra.security;
 
 import com.github.adminfaces.template.session.AdminSession;
+import net.horus.pointage.models.Users;
+import net.horus.pointage.utils.HibernateUtils;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.omnifaces.util.Faces;
 
 import javax.enterprise.context.SessionScoped;
@@ -12,6 +16,7 @@ import java.io.Serializable;
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
 import com.github.adminfaces.template.config.AdminConfig;
 import javax.inject.Inject;
+import javax.naming.NamingException;
 
 /**
  * Created by rmpestano on 12/20/14.
@@ -33,11 +38,22 @@ public class LogonMB extends AdminSession implements Serializable {
     private String email;
     private String password;
     private boolean remember;
+    private HibernateUtils hibernateUtils;
+
+    public LogonMB(){
+        hibernateUtils = new HibernateUtils();
+    }
+
     @Inject
     private AdminConfig adminConfig;
 
 
-    public void login() throws IOException {
+    public void login() throws IOException, NamingException {
+        Session session = hibernateUtils.getSession();
+
+        Query query = session.createQuery("from "+ Users.class.getName());
+        System.out.println(query.list().size());
+
         currentUser = email;
         addDetailMessage("Logged in successfully as <b>" + email + "</b>");
         Faces.getExternalContext().getFlash().setKeepMessages(true);

@@ -42,7 +42,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.jsf</url-pattern>
+        <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -69,30 +69,30 @@
     <!-- Don't need to declare error pages if you keep the default sufix (.xhtml)-->
     <error-page>
         <error-code>403</error-code>
-        <location>/403.jsf</location>
+        <location>/403.xhtml</location>
     </error-page>
     <error-page>
         <exception-type>com.github.adminfaces.template.exception.AccessDeniedException</exception-type>
-        <location>/403.jsf</location>
+        <location>/403.xhtml</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/404.jsf</location>
+        <location>/404.xhtml</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/500.jsf</location>
+        <location>/500.xhtml</location>
     </error-page>
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/500.jsf</location>
+        <location>/500.xhtml</location>
     </error-page>
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/expired.jsf</location>
+        <location>/expired.xhtml</location>
     </error-page>
     <error-page>
         <exception-type>javax.persistence.OptimisticLockException</exception-type>
-        <location>/optimistic.jsf</location>
+        <location>/optimistic.xhtml</location>
     </error-page>
 </web-app>

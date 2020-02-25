@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 f?vr. 2020 ? 09:43:03 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="net.horus.pointage.models.EmployeePointage" table="employee_pointage" catalog="pointage" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="employes" class="net.horus.pointage.models.Employes" fetch="select">
+            <column name="employe_id" />
+        </many-to-one>
+        <property name="dateService" type="date">
+            <column name="date_service" length="10" />
+        </property>
+        <property name="numeroCarte" type="string">
+            <column name="numero_carte" length="50" />
+        </property>
+        <property name="matriculeEmploye" type="string">
+            <column name="matricule_employe" length="50" />
+        </property>
+        <property name="mois" type="java.lang.Integer">
+            <column name="mois" />
+        </property>
+        <property name="annees" type="java.lang.Integer">
+            <column name="annees" />
+        </property>
+        <property name="heurDebutService" type="time">
+            <column name="heur_debut_service" length="8" />
+        </property>
+        <property name="heurFinService" type="time">
+            <column name="heur_fin_service" length="8" />
+        </property>
+        <property name="heureSupAutorize" type="boolean">
+            <column name="heure_sup_autorize" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 f?vr. 2020 ? 09:43:03 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="net.horus.pointage.models.CardRfid" table="card_rfid" catalog="pointage" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="employes" class="net.horus.pointage.models.Employes" fetch="select">
+            <column name="employe_id" not-null="true" />
+        </many-to-one>
+        <property name="isValide" type="string">
+            <column name="is_valide" length="2" not-null="true" />
+        </property>
+        <property name="maricule" type="string">
+            <column name="maricule" length="50" />
+        </property>
+        <property name="numeroCarte" type="string">
+            <column name="numero_carte" length="50" unique="true" />
+        </property>
+        <property name="identifiantCarte" type="string">
+            <column name="identifiant_carte" length="50" unique="true" />
+        </property>
+    </class>
+</hibernate-mapping>
