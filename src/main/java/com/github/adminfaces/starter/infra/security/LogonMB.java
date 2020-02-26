@@ -15,6 +15,8 @@ import java.io.Serializable;
 
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
 import com.github.adminfaces.template.config.AdminConfig;
+import org.omnifaces.util.Messages;
+
 import javax.inject.Inject;
 import javax.naming.NamingException;
 
@@ -34,8 +36,8 @@ import javax.naming.NamingException;
 @Specializes
 public class LogonMB extends AdminSession implements Serializable {
 
-    private String currentUser;
-    private String email;
+    private Users currentUser ,users;
+    private String login;
     private String password;
     private boolean remember;
     private HibernateUtils hibernateUtils;
@@ -51,13 +53,29 @@ public class LogonMB extends AdminSession implements Serializable {
     public void login() throws IOException, NamingException {
         Session session = hibernateUtils.getSession();
 
-        Query query = session.createQuery("from "+ Users.class.getName());
-        System.out.println(query.list().size());
+        Query query = session.createQuery("from "+ Users.class.getName()+" where login =:login and password =:password ").setString("login", login).setString("password", password).setMaxResults(1);
+        System.out.println(query.list().size() > 0);
+        if(query.list().size() > 0){
+            users = (Users) query.list().get(0);
+            if(users != null && users.getIsvalide()==true){
+                currentUser = users;
+                addDetailMessage("Logged in successfully as <b>" + currentUser.getLogin() + "</b>");
+                Faces.getExternalContext().getFlash().setKeepMessages(true);
+                Faces.redirect(adminConfig.getIndexPage());
+            }
+        else{
+                Messages.addGlobalError("Compte inactif.");
+                Messages.addInfo(null,"Utilisateur n'existe pas ");
+                Faces.redirect(adminConfig.getIndexPage());
+            }
+        }else {
+            Messages.addGlobalError("Unknown login, please try again.");
+            Messages.addInfo(null,"Utilisateur n'existe pas ");
+            Faces.redirect(adminConfig.getIndexPage());
+        }
 
-        currentUser = email;
-        addDetailMessage("Logged in successfully as <b>" + email + "</b>");
-        Faces.getExternalContext().getFlash().setKeepMessages(true);
-        Faces.redirect(adminConfig.getIndexPage());
+
+
     }
 
     @Override
@@ -66,12 +84,12 @@ public class LogonMB extends AdminSession implements Serializable {
         return currentUser != null;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -90,11 +108,19 @@ public class LogonMB extends AdminSession implements Serializable {
         this.remember = remember;
     }
 
-    public String getCurrentUser() {
+    public Users getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(String currentUser) {
+    public void setCurrentUser(Users currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 }

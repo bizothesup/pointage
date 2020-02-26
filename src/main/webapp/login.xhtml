@@ -84,23 +84,23 @@
 
         <div class="login-box">
             <div class="login-logo">
-                <p:link href="index.xhtml"><b>Admin</b>Starter</p:link>
+                <p:link href="index.xhtml"><b>Horus</b>Pointage</p:link>
             </div>
             <!-- /.login-logo -->
             <div class="box login-box-body">
                 <h:form>
-                    <p class="login-box-msg">Sign in to start your session</p>
+                    <p class="login-box-msg">Veillez reseigner vos informations</p>
                     <p:messages closable="true"/>
 
                     <div class="form-group has-feedback">
-                        <p:inputText value="#{logonMB.email}" type="email" styleClass="form-control" placeholder="Just type any value"
+                        <p:inputText value="#{logonMB.login}" type="text" styleClass="form-control" placeholder="Login"
                                      required="true"
-                                     requiredMessage="Email is required."/>
+                                     requiredMessage="Login Required."/>
                         <i class="fa fa-envelope form-control-feedback" ></i>
                     </div>
                     <div class="form-group has-feedback">
                         <p:inputText value="#{logonMB.password}" type="password" styleClass="form-control"
-                                     placeholder="Just type any value" required="true"
+                                     placeholder="Mot de Passe" required="true"
                                      requiredMessage="Password is required."/>
                         <i class="fa fa-lock form-control-feedback" style="font-size: 18px"></i>
                     </div>
@@ -115,21 +115,6 @@
                         </div>
                     </div>
                 </h:form>
-
-                <div class="social-auth-links text-center">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i
-                            class="fa fa-facebook"></i> Sign in using
-                        Facebook</a>
-                    <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i
-                            class="fa fa-google-plus"></i> Sign in using
-                        Google+</a>
-                </div>
-                <!-- /.social-auth-links -->
-
-                <a href="#">I forgot my password</a><br/>
-                <a href="#" class="text-center">Register a new membership</a>
-
             </div>
             <!-- /.login-box-body -->
         </div>
