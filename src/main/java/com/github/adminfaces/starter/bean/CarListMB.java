@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
+import net.horus.pointage.dao.RoleDao;
 
 /**
  * Created by rmpestano on 12/02/17.
@@ -26,6 +30,9 @@ public class CarListMB implements Serializable {
 
     @Inject
     CarService carService;
+    
+     @Inject
+     RoleDao roleDao;
 
     Integer id;
 
@@ -39,35 +46,40 @@ public class CarListMB implements Serializable {
 
     @PostConstruct
     public void initDataModel() {
-        cars = new LazyDataModel<Car>() {
-            @Override
-            public List<Car> load(int first, int pageSize,
-                                  String sortField, SortOrder sortOrder,
-                                  Map<String, Object> filters) {
-                com.github.adminfaces.starter.infra.model.SortOrder order = null;
-                if (sortOrder != null) {
-                    order = sortOrder.equals(SortOrder.ASCENDING) ? com.github.adminfaces.starter.infra.model.SortOrder.ASCENDING
-                            : sortOrder.equals(SortOrder.DESCENDING) ? com.github.adminfaces.starter.infra.model.SortOrder.DESCENDING
-                            : com.github.adminfaces.starter.infra.model.SortOrder.UNSORTED;
+        try {
+            System.out.println("com.github.adminfaces.starter.bean.CarListMB.initDataModel()"+roleDao.selectRoles().size());
+            cars = new LazyDataModel<Car>() {
+                @Override
+                public List<Car> load(int first, int pageSize,
+                        String sortField, SortOrder sortOrder,
+                        Map<String, Object> filters) {
+                    com.github.adminfaces.starter.infra.model.SortOrder order = null;
+                    if (sortOrder != null) {
+                        order = sortOrder.equals(SortOrder.ASCENDING) ? com.github.adminfaces.starter.infra.model.SortOrder.ASCENDING
+                                : sortOrder.equals(SortOrder.DESCENDING) ? com.github.adminfaces.starter.infra.model.SortOrder.DESCENDING
+                                : com.github.adminfaces.starter.infra.model.SortOrder.UNSORTED;
+                    }
+                    filter.setFirst(first).setPageSize(pageSize)
+                            .setSortField(sortField).setSortOrder(order)
+                            .setParams(filters);
+                    List<Car> list = carService.paginate(filter);
+                    setRowCount((int) carService.count(filter));
+                    return list;
                 }
-                filter.setFirst(first).setPageSize(pageSize)
-                        .setSortField(sortField).setSortOrder(order)
-                        .setParams(filters);
-                List<Car> list = carService.paginate(filter);
-                setRowCount((int) carService.count(filter));
-                return list;
-            }
-
-            @Override
-            public int getRowCount() {
-                return super.getRowCount();
-            }
-
-            @Override
-            public Car getRowData(String key) {
-                return carService.findById(new Integer(key));
-            }
-        };
+                
+                @Override
+                public int getRowCount() {
+                    return super.getRowCount();
+                }
+                
+                @Override
+                public Car getRowData(String key) {
+                    return carService.findById(new Integer(key));
+                }
+            };
+        } catch (NamingException ex) {
+            Logger.getLogger(CarListMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void clear() {

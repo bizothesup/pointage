@@ -23,8 +23,9 @@ import org.hibernate.Transaction;
  */
 @Stateless
 public class RoleDao  implements Serializable{
-    private HibernateUtils hibernateUtils;
+    private final HibernateUtils hibernateUtils;
     
+   
     private Role role;
     
     public  RoleDao(){
@@ -75,7 +76,7 @@ public class RoleDao  implements Serializable{
         int result;
         try{
             transaction = session.beginTransaction();
-             result = session.createQuery("delete from role where id=:idRole").setString("idRole",paramString).executeUpdate();
+             result = session.createQuery("delete from role where id=:id").setString("idRole",paramString).executeUpdate();
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)
@@ -96,7 +97,7 @@ public class RoleDao  implements Serializable{
         List listRole;
         try{
             transaction = session.beginTransaction();
-             listRole = session.createQuery("from role").list();     
+             listRole = session.createQuery("from "+Role.class.getName()).list();     
         }
         finally{
             
@@ -110,7 +111,7 @@ public class RoleDao  implements Serializable{
         List listRole;
         ArrayList arraylist= new ArrayList();
         try{
-             listRole = session.createQuery("from role").list();  
+             listRole = session.createQuery("from "+Role.class.getName()).list();  
              if(listRole.size()!=0){
                  for (byte b=0; b<listRole.size(); b++)
                      arraylist.add(new SelectItem(((Role)listRole.get(b)).getName()));

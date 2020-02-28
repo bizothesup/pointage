@@ -40,7 +40,7 @@ public class LogonMB extends AdminSession implements Serializable {
     private String login;
     private String password;
     private boolean remember;
-    private HibernateUtils hibernateUtils;
+    private final HibernateUtils hibernateUtils;
 
     public LogonMB(){
         hibernateUtils = new HibernateUtils();

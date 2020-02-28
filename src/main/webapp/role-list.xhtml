@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Liste des Roles"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. -->
+    </ui:define>
+    <ui:define name="description">
+        Liste Role nom, id
+    </ui:define>
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="Ajouter" icon="fa fa-plus" action="/role-form" styleClass="btn-primary"/>
+                    </div>
+
+                    <p:dataTable widgetVar="roleTable" var="r" value="#{roleListBean.roleModel}" lazy="true"
+                    paginator="true" rows="15"  selection="#{roleListBean.selectedItems}" paginatorPosition="bottom"
+                                 emptyMessage="Aucun resultat trouvée" scrollable="true" scrollWidth="100%">
+                        <f:facet name="header">
+
+                        </f:facet>
+                        <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
+                        <p:column headerText="ID">
+                            <p:link value="#{c.id}" outcome="/car-form" >
+                                <f:param name="id" value="#{c.id}"/>
+                            </p:link>
+                        </p:column>
+                        <p:column headerText="Name" sortBy="#{c.name}">
+                            <h:outputText value="#{c.name}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
