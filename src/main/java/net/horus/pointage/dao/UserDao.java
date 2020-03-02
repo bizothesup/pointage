@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.ejb.Stateless;
-import javax.faces.model.SelectItem;
 import javax.naming.NamingException;
-import net.horus.pointage.models.Role;
 import net.horus.pointage.models.Users;
 import net.horus.pointage.utils.HibernateUtils;
 import org.hibernate.HibernateException;
@@ -103,10 +101,10 @@ public class UserDao  implements Serializable{
         List listUsers;
         try{
             transaction = session.beginTransaction();
-             listUsers = session.createQuery("from users").list();     
+             listUsers = session.createQuery("from "+Users.class.getName()).list();     
         }
         finally{
-            
+            hibernateUtils.closeSession();
         }
         return listUsers;
     }
