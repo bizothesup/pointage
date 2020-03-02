@@ -231,8 +231,5 @@ public class UserDao  implements Serializable{
             e.printStackTrace();
         }
         return null;
-    }
-    
-    
-    
+    }  
 }
