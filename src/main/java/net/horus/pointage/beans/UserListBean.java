@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import net.horus.pointage.dao.UserDao;
-import net.horus.pointage.models.Role;
 import net.horus.pointage.models.Users;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -31,16 +30,16 @@ import org.primefaces.model.SortOrder;
 public class UserListBean implements Serializable {
 
     @Inject
-    UserDao userDao;
+    private UserDao userDao;
     private Users user;
-    Integer id;
-    LazyDataModel<Users> users;
+    private Integer id;
+    private LazyDataModel<Users> users;
 
-    Filter<Users> filter = new Filter<>(new Users());
+    private Filter<Users> filter = new Filter<>(new Users());
 
-    List<Users> selectedUser; //cars selected in checkbox column
+    private List<Users> selectedUser; //cars selected in checkbox column
 
-    List<Users> filteredValue;// datatable filteredValue attribute (column filters)
+    private List<Users> filteredValue;// datatable filteredValue attribute (column filters)
     private String action;
 
     @PostConstruct
@@ -137,4 +136,5 @@ public class UserListBean implements Serializable {
     public void setFilteredValue(List<Users> filteredValue) {
         this.filteredValue = filteredValue;
     }
+    
 }
