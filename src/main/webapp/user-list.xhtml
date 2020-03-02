@@ -45,10 +45,10 @@
                             </p:link>
                         </p:column>
                         <p:column headerText="nom et prenom">
-                            <h:outputText value="#{c.nom}"/>
+                            <h:outputText value="#{c.nom.concat(' ').concat(c.prenom)}"/>
                         </p:column>
                         <p:column headerText="email">
-                            <h:outputText value="#{c.password}"/>
+                            <h:outputText value="#{c.email}"/>
                         </p:column>
                     </p:dataTable>
                 </div>
