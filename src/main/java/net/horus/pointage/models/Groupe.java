@@ -1,5 +1,5 @@
 package net.horus.pointage.models;
-// Generated 25 févr. 2020 à 09:43:02 by Hibernate Tools 4.3.1
+
 
 
 import java.util.HashSet;

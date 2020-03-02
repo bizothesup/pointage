@@ -5,6 +5,7 @@
  */
 package net.horus.pointage.beans;
 
+import com.github.adminfaces.starter.model.Car;
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
 import static com.github.adminfaces.template.util.Assert.has;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import org.omnifaces.util.Faces;
  *
  * @author mbs dev
  */
-@Named(value = "roleFomBean")
+@Named
 @ViewScoped
 public class RoleFomBean implements Serializable {
 
@@ -30,6 +31,7 @@ public class RoleFomBean implements Serializable {
     private Role role;
     @Inject
     private RoleDao roleDao;
+    
       public void init() {
         if (Faces.isAjaxRequest()) {
             return;
@@ -41,7 +43,12 @@ public class RoleFomBean implements Serializable {
             System.out.println("ini");
         }
     }
-     public void setId(Integer id) {
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,40 +59,24 @@ public class RoleFomBean implements Serializable {
     public void setRole(Role role) {
         this.role = role;
     }
-
-   
-
-
-    public void remove() throws IOException, NamingException {
-        if (has(role) && has(role.getId())) {
-            roleDao.deleteRole(role.getId());
-            addDetailMessage("Role " + role.getName()
-                    + " removed successfully");
-            Faces.getFlash().setKeepMessages(true);
-            Faces.redirect("car-list.jsf");
-        }
+    
+        public void remove() throws IOException {
+       
     }
 
-    public void save() throws NamingException {
+    public void save() {
         String msg;
-        if (role.getId() == null) {
-            roleDao.insertRole(role);
-            msg = "Role " + role.getName() + " created successfully";
-        } else {
-            roleDao.MiseAjourRole(role);
-            msg = "Role " + role.getName() + " updated successfully";
+        if(role.getId() == null){
+            System.out.println("gdstdd");
         }
-        addDetailMessage(msg);
     }
 
     public void clear() {
         role = new Role();
         id = null;
     }
-
-    public boolean isNew() {
-        return role == null || role.getId() == null;
-    }
-
+      public boolean isNew() {
+          return role == null || role.getId() == null;
+      }
     
 }

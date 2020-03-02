@@ -7,22 +7,16 @@ import com.github.adminfaces.starter.model.Car;
 import net.horus.pointage.dao.RoleDao;
 import net.horus.pointage.models.Role;
 import org.omnifaces.cdi.ViewScoped;
-import org.omnifaces.util.Faces;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SelectableDataModel;
 import org.primefaces.model.SortOrder;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.NamingException;
-import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.*;
 
-import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
-import static com.github.adminfaces.template.util.Assert.has;
 
 @Named
 @ViewScoped
