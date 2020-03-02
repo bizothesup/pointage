@@ -60,15 +60,26 @@ public class RoleFomBean implements Serializable {
         this.role = role;
     }
     
-        public void remove() throws IOException {
-       
+        public void remove() throws IOException, NamingException {
+            if(has(role) && has(role.getId())){
+                roleDao.deleteRole(role.getId());
+                addDetailMessage("Role " + role.getName()
+                    + " removed successfully");
+            Faces.getFlash().setKeepMessages(true);
+            Faces.redirect("role-list.jsf");
+            }
     }
 
-    public void save() {
+    public void save() throws NamingException {
         String msg;
         if(role.getId() == null){
-            System.out.println("gdstdd");
+            roleDao.insertRole(role);
+            msg = "Role " + role.getName() + " created successfully"; 
+        }else{
+            roleDao.MiseAjourRole(role);
+          msg = "Role " + role.getName() + " updated successfully";
         }
+        addDetailMessage(msg);
     }
 
     public void clear() {
