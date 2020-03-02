@@ -9,7 +9,6 @@ import net.horus.pointage.models.Role;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SelectableDataModel;
 import org.primefaces.model.SortOrder;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +17,6 @@ import javax.inject.Named;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.*;
 
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
@@ -26,7 +24,7 @@ import static com.github.adminfaces.template.util.Assert.has;
 
 @Named
 @ViewScoped
-public class RoleListBean  implements Serializable {
+public class RoleBean  implements Serializable {
 
     @Inject
     RoleDao roleDao;
@@ -46,8 +44,8 @@ public class RoleListBean  implements Serializable {
         roles = new LazyDataModel<Role>() {
             @Override
             public List<Role> load(int first, int pageSize,
-                                   String sortField, SortOrder sortOrder,
-                                   Map<String, Object> filters) {
+            String sortField, SortOrder sortOrder,
+            Map<String, Object> filters) {
 
                 com.github.adminfaces.starter.infra.model.SortOrder order = null;
                 if (sortOrder != null) {
@@ -60,7 +58,7 @@ public class RoleListBean  implements Serializable {
                         .setParams(filters);
                 List<Role> list = null;
                 try {
-                    list = roleDao.paginate(filter);
+                     list = roleDao.paginate(filter);
                     setRowCount((int) roleDao.count(filter));
                 } catch (NamingException e) {
                     e.printStackTrace();
@@ -78,6 +76,60 @@ public class RoleListBean  implements Serializable {
                 return roleDao.findById(new Integer(key));
             }
         };
+    }
+
+    public void remove() throws NamingException, IOException {
+        if (has(role) && has(role.getId())) {
+            roleDao.deleteRole(role.getId());
+            addDetailMessage("Role  " + role.getName()
+                    + " removed successfully");
+            Faces.getFlash().setKeepMessages(true);
+            Faces.redirect("role.list.xhtml");
+        }
+    }
+
+    public void save(){
+        String msg;
+        System.out.println("name"+role.getName());
+        /*if(role.getId() == null){
+            //roleDao.insertRole(role);
+            msg = "Role " + role.getName() + " created successfully";
+        }else{
+            try {
+                roleDao.MiseAjourRole(role);
+            } catch (NamingException ex) {
+                Logger.getLogger(RoleFormBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            msg = "Role " + role.getName() + " updated successfully";
+        }*/
+        //addDetailMessage(msg);
+    }
+
+    public void clear() {
+        role = new Role();
+        id = null;
+    }
+
+    public boolean isNew() {
+        return role == null || role.getId() == null;
+    }
+
+    public String action(){
+        if (action.equals("new")){
+            role = new Role();
+            System.out.println("MBSDE INr object role");
+            return "role-form";
+
+        }
+        if (action.equals("edit")){
+            role = roleDao.findById(id);
+            return  "role-form";
+        }
+        if (action.equals("save")){
+            System.out.println("MBSDE INr object save");
+            return "role-form";
+        }
+        return null;
     }
 
     public String getAction() {

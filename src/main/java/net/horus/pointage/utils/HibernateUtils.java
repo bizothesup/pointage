@@ -28,7 +28,7 @@ public class HibernateUtils {
         InitialContext initialContext = new InitialContext();
         Configuration configuration = new Configuration();
         configuration.configure("hibernate.cfg.xml");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "none");
         System.out.println("***************Mapping des class**********************");
          mappingClass(configuration);
         this.sessionFactory = configuration.buildSessionFactory();
@@ -47,5 +47,18 @@ public class HibernateUtils {
       return paramConfig;
     }
 
+
+    public void closeSession(){
+        Session session = (Session) sessiontThreadLocal.get();
+        if(session != null){
+            sessiontThreadLocal.remove();
+            if(!sessionFactory.isClosed())
+                sessionFactory.close();
+            if(session.isConnected() == true)
+                session.disconnect();
+            if (session.isOpen() == true)
+                session.close();
+        }
+    }
 
 }

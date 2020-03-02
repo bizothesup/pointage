@@ -8,14 +8,23 @@ package net.horus.pointage.dao;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
 import javax.naming.NamingException;
+
+import com.github.adminfaces.starter.infra.model.Filter;
+import com.github.adminfaces.starter.infra.model.SortOrder;
+import com.github.adminfaces.starter.model.Car;
+import com.github.adminfaces.template.exception.BusinessException;
 import net.horus.pointage.models.Role;
 import net.horus.pointage.utils.HibernateUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import static com.github.adminfaces.template.util.Assert.has;
 
 /**
  *
@@ -45,7 +54,7 @@ public class RoleDao  implements Serializable{
             throw hibernateException;
         }
         finally{
-            
+            this.hibernateUtils.closeSession();
         }
         return role;
     }
@@ -65,18 +74,18 @@ public class RoleDao  implements Serializable{
             
         }
         finally{
-            
+            this.hibernateUtils.closeSession();
         }
         return role;
     }
     
-    public int deleteRole(String paramString) throws NamingException{
+    public int deleteRole(Integer paramString) throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
         int result;
         try{
             transaction = session.beginTransaction();
-             result = session.createQuery("delete from role where id=:id").setString("idRole",paramString).executeUpdate();
+             result = session.createQuery("delete from "+Role.class.getName()+" where id=:id").setInteger("id",paramString).executeUpdate();
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)
@@ -85,7 +94,7 @@ public class RoleDao  implements Serializable{
             
         }
         finally{
-            
+            this.hibernateUtils.closeSession();
         }
         return result;
     }
@@ -100,7 +109,7 @@ public class RoleDao  implements Serializable{
              listRole = session.createQuery("from "+Role.class.getName()).list();     
         }
         finally{
-            
+            this.hibernateUtils.closeSession();
         }
         return listRole;
     }
@@ -118,12 +127,105 @@ public class RoleDao  implements Serializable{
              }      
         }
         finally{
-            
+            this.hibernateUtils.closeSession();
         }
         return arraylist;
     }
-    
-    
-    
-    
+
+    public List<Role> paginate(Filter<Role> filter)  {
+        List<Role> pagedRole= new ArrayList<>();
+        if(has(filter.getSortOrder()) && !SortOrder.UNSORTED.equals(filter.getSortOrder())) {
+            try {
+                pagedRole = selectRoles().stream().
+                        sorted((c1, c2) -> {
+                            if (filter.getSortOrder().isAscending()) {
+                                return c1.getId().compareTo(c2.getId());
+                            } else {
+                                return c2.getId().compareTo(c1.getId());
+                            }
+                        })
+                        .collect(Collectors.toList());
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        int page = filter.getFirst() + filter.getPageSize();
+        if (filter.getParams().isEmpty()) {
+            try {
+                pagedRole = pagedRole.subList(filter.getFirst(), page > selectRoles().size() ? selectRoles().size() : page);
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
+            return pagedRole;
+        }
+
+        List<Predicate<Role>> predicates = configFilter(filter);
+
+        List<Role> pagedList = null;
+        try {
+            pagedList = selectRoles().stream().filter(predicates
+                    .stream().reduce(Predicate::or).orElse(t -> true))
+                    .collect(Collectors.toList());
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (page < pagedList.size()) {
+            pagedList = pagedList.subList(filter.getFirst(), page);
+        }
+
+        if (has(filter.getSortField())) {
+            pagedList = pagedList.stream().
+                    sorted((c1, c2) -> {
+                        boolean asc = SortOrder.ASCENDING.equals(filter.getSortOrder());
+                        if (asc) {
+                            return c1.getId().compareTo(c2.getId());
+                        } else {
+                            return c2.getId().compareTo(c1.getId());
+                        }
+                    })
+                    .collect(Collectors.toList());
+        }
+        return pagedList;
+    }
+    private List<Predicate<Role>> configFilter(Filter<Role> filter) {
+        List<Predicate<Role>> predicates = new ArrayList<>();
+        if (filter.hasParam("id")) {
+            Predicate<Role> idPredicate = (Role c) -> c.getId().equals(filter.getParam("id"));
+            predicates.add(idPredicate);
+        }
+
+
+        if (has(filter.getEntity())) {
+            Role filterEntity = filter.getEntity();
+
+
+            if (has(filterEntity.getName())) {
+                Predicate<Role> namePredicate = (Role c) -> c.getName().toLowerCase().contains(filterEntity.getName().toLowerCase());
+                predicates.add(namePredicate);
+            }
+        }
+        return predicates;
+    }
+    public long count(Filter<Role> filter) throws NamingException {
+        return selectRoles().stream()
+                .filter(configFilter(filter).stream()
+                        .reduce(Predicate::or).orElse(t -> true))
+                .count();
+    }
+
+    public Role findById(Integer id) {
+        try {
+            return selectRoles().stream()
+                    .filter(c -> c.getId().equals(id))
+                    .findFirst()
+                    .orElseThrow(() -> new BusinessException("Role not found with id " + id));
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
