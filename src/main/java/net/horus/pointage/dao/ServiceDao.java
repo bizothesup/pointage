@@ -5,12 +5,19 @@
  */
 package net.horus.pointage.dao;
 
+import com.github.adminfaces.starter.infra.model.Filter;
+import com.github.adminfaces.starter.infra.model.SortOrder;
+import com.github.adminfaces.template.exception.BusinessException;
+import static com.github.adminfaces.template.util.Assert.has;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
 import javax.naming.NamingException;
+import net.horus.pointage.models.Groupe;
 import net.horus.pointage.models.Role;
 import net.horus.pointage.models.Services;
 import net.horus.pointage.utils.HibernateUtils;
@@ -97,10 +104,10 @@ public class ServiceDao  implements Serializable{
         List listServices;
         try{
             transaction = session.beginTransaction();
-             listServices = session.createQuery("from services").list();     
+             listServices = session.createQuery("from "+Services.class.getName()).list();     
         }
         finally{
-            
+            hibernateUtils.closeSession();
         }
         return listServices;
     }
@@ -122,6 +129,103 @@ public class ServiceDao  implements Serializable{
         }
         return arraylist;
     }
+     
+     public List<Services> paginate(Filter<Services> filter)  {
+        List<Services> pagedServices = new ArrayList<>();
+        if(has(filter.getSortOrder()) && !SortOrder.UNSORTED.equals(filter.getSortOrder())) {
+            try {
+                pagedServices = selectServices().stream().
+                        sorted((c1, c2) -> {
+                            if (filter.getSortOrder().isAscending()) {
+                                return c1.getId().compareTo(c2.getId());
+                            } else {
+                                return c2.getId().compareTo(c1.getId());
+                            }
+                        })
+                        .collect(Collectors.toList());
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        int page = filter.getFirst() + filter.getPageSize();
+        if (filter.getParams().isEmpty()) {
+            try {
+                pagedServices = pagedServices.subList(filter.getFirst(), page > selectServices().size() ? selectServices().size() : page);
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
+            return pagedServices;
+        }
+
+        List<Predicate<Services>> predicates = configFilter(filter);
+
+        List<Services> pagedList = null;
+        try {
+            pagedList = selectServices().stream().filter(predicates
+                    .stream().reduce(Predicate::or).orElse(t -> true))
+                    .collect(Collectors.toList());
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        if (page < pagedList.size()) {
+            pagedList = pagedList.subList(filter.getFirst(), page);
+        }
+
+        if (has(filter.getSortField())) {
+            pagedList = pagedList.stream().
+                    sorted((c1, c2) -> {
+                        boolean asc = SortOrder.ASCENDING.equals(filter.getSortOrder());
+                        if (asc) {
+                            return c1.getId().compareTo(c2.getId());
+                        } else {
+                            return c2.getId().compareTo(c1.getId());
+                        }
+                    })
+                    .collect(Collectors.toList());
+        }
+        return pagedList;
+    }
+    
+    private List<Predicate<Services>> configFilter(Filter<Services> filter) {
+        List<Predicate<Services>> predicates = new ArrayList<>();
+        if (filter.hasParam("id")) {
+            Predicate<Services> idPredicate = (Services c) -> c.getId().equals(filter.getParam("id"));
+            predicates.add(idPredicate);
+        }
+
+        if (has(filter.getEntity())) {
+            Services filterEntity = filter.getEntity();
+
+
+        if (has(filterEntity.getName())) {
+             Predicate<Services> NamePredicate = (Services c) -> c.getName().toLowerCase().contains(filterEntity.getName().toLowerCase());
+             predicates.add(NamePredicate);
+            }
+        
+    }
+        return predicates;
+    }
+    
+    public long count(Filter<Services> filter) throws NamingException {
+        return selectServices().stream()
+                .filter(configFilter(filter).stream()
+                        .reduce(Predicate::or).orElse(t -> true))
+                .count();
+    }
+
+    public Services findById(Integer id) {
+        try {
+            return selectServices().stream()
+                    .filter(c -> c.getId().equals(id))
+                    .findFirst()
+                    .orElseThrow(() -> new BusinessException(" User not found with id " + id));
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }  
     
     
     
