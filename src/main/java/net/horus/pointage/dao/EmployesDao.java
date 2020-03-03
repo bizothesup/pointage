@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.naming.NamingException;
 import net.horus.pointage.models.Employes;
+import net.horus.pointage.models.Users;
 import net.horus.pointage.utils.HibernateUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -104,16 +105,16 @@ public class EmployesDao  implements Serializable{
              listEmployes = session.createQuery("from "+Employes.class.getName()).list();     
         }
         finally{
-            
+            hibernateUtils.closeSession();
         }
         return listEmployes;
     } 
     
-    public List<Employes> paginate(Filter<Employes> filter) {
-         List<Employes> pagedEmployes= new ArrayList<>();
+    public List<Employes> paginate(Filter<Employes> filter)  {
+        List<Employes> pagedEmploye = new ArrayList<>();
         if(has(filter.getSortOrder()) && !SortOrder.UNSORTED.equals(filter.getSortOrder())) {
             try {
-                pagedEmployes = selectEmployes().stream().
+                pagedEmploye = selectEmployes().stream().
                         sorted((c1, c2) -> {
                             if (filter.getSortOrder().isAscending()) {
                                 return c1.getId().compareTo(c2.getId());
@@ -130,11 +131,11 @@ public class EmployesDao  implements Serializable{
         int page = filter.getFirst() + filter.getPageSize();
         if (filter.getParams().isEmpty()) {
             try {
-                pagedEmployes = pagedEmployes.subList(filter.getFirst(), page > selectEmployes().size() ? selectEmployes().size() : page);
+                pagedEmploye = pagedEmploye.subList(filter.getFirst(), page > selectEmployes().size() ? selectEmployes().size() : page);
             } catch (NamingException e) {
                 e.printStackTrace();
             }
-            return pagedEmployes;
+            return pagedEmploye;
         }
 
         List<Predicate<Employes>> predicates = configFilter(filter);
@@ -164,8 +165,7 @@ public class EmployesDao  implements Serializable{
                     })
                     .collect(Collectors.toList());
         }
-        return pagedEmployes;
-        
+        return pagedList;
     }
     
     private List<Predicate<Employes>> configFilter(Filter<Employes> filter) {
@@ -204,16 +204,18 @@ public class EmployesDao  implements Serializable{
     }
 
     public Employes findById(Integer id) {
-        try{
+        try {
             return selectEmployes().stream()
                     .filter(c -> c.getId().equals(id))
                     .findFirst()
                     .orElseThrow(() -> new BusinessException(" User not found with id " + id));
-        } catch(NamingException e){
+        } catch (NamingException e) {
             e.printStackTrace();
-            
         }
         return null;
-    }
-    
+    }  
+
 }
+
+
+

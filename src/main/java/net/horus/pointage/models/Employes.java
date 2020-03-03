@@ -29,7 +29,7 @@ import javax.persistence.UniqueConstraint;
 public class Employes  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private String marticule;
      private String nom;
      private String prenom;
@@ -49,10 +49,10 @@ public class Employes  implements java.io.Serializable {
     }
 
 	
-    public Employes(int id) {
+    public Employes(Integer id) {
         this.id = id;
     }
-    public Employes(int id, String marticule, String nom, String prenom, Date dateNaissance, String lieuNaissance, String profession, String service, String email, String adresse, String photo, Set<Groupe> groupes, Set<EmployeePointage> employeePointages, Set<CardRfid> cardRfids, Set<EmployeSortiePointage> employeSortiePointages) {
+    public Employes(Integer id, String marticule, String nom, String prenom, Date dateNaissance, String lieuNaissance, String profession, String service, String email, String adresse, String photo, Set<Groupe> groupes, Set<EmployeePointage> employeePointages, Set<CardRfid> cardRfids, Set<EmployeSortiePointage> employeSortiePointages) {
        this.id = id;
        this.marticule = marticule;
        this.nom = nom;
@@ -74,7 +74,7 @@ public class Employes  implements java.io.Serializable {
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
@@ -220,9 +220,6 @@ public class Employes  implements java.io.Serializable {
     public void setEmployeSortiePointages(Set<EmployeSortiePointage> employeSortiePointages) {
         this.employeSortiePointages = employeSortiePointages;
     }
-
-
-
 
 }
 
