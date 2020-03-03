@@ -107,7 +107,7 @@ public class PointageParamDao  implements Serializable{
              listPointageParam = session.createQuery("from "+PointageParam.class.getName()).list();     
         }
         finally{
-            
+            hibernateUtils.closeSession();
         }
         return listPointageParam;
         
