@@ -74,13 +74,13 @@ public class UserDao  implements Serializable{
         return users;
     }
     
-    public int deleteUsers(String paramString) throws NamingException{
+    public int deleteUsers(Integer paramString) throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
         int result;
         try{
             transaction = session.beginTransaction();
-             result = session.createQuery("delete from users where id=:idUser").setString("idUser",paramString).executeUpdate();
+             result = session.createQuery("delete from users where id=:idUser").setInteger("idUser",paramString).executeUpdate();
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)

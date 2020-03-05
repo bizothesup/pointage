@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.horus.pointage.beans;
 
+import net.horus.pointage.dao.GroupeDao;
 import net.horus.pointage.dao.ServiceDao;
+import net.horus.pointage.models.Groupe;
 import net.horus.pointage.models.Services;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
@@ -19,18 +16,14 @@ import java.io.Serializable;
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
 import static com.github.adminfaces.template.util.Assert.has;
 
-/**
- *
- * @author mbsdev
- */
 @Named
 @ViewScoped
-public class ServiceFormBean implements Serializable {
+public class GroupeFormBean implements Serializable {
     private Integer id;
-    private Services services;
+    private Groupe groupe;
 
     @Inject
-    private ServiceDao serviceDao;
+    private GroupeDao groupeDao;
 
 
     public void init() {
@@ -38,9 +31,9 @@ public class ServiceFormBean implements Serializable {
             return;
         }
         if (has(id)) {
-            services = serviceDao.findById(id);
+            groupe = groupeDao.findById(id);
         } else {
-            services = new Services();
+            groupe = new Groupe();
             System.out.println("ini");
         }
     }
@@ -54,18 +47,18 @@ public class ServiceFormBean implements Serializable {
         this.id = id;
     }
 
-    public Services getServices() {
-        return services;
+    public Groupe getGroupe() {
+        return groupe;
     }
 
-    public void setServices(Services services) {
-        this.services = services;
+    public void setGroupe(Groupe groupe) {
+        this.groupe = groupe;
     }
 
     public void remove() throws IOException, NamingException {
-        if(has(services) && has(services.getId())){
-            serviceDao.deleteService(services.getId());
-            addDetailMessage("Services " + services.getName()
+        if(has(groupe) && has(groupe.getId())){
+            groupeDao.deleteGroupe(groupe.getId());
+            addDetailMessage("groupe " + groupe.getName()
                     + " removed successfully");
             Faces.getFlash().setKeepMessages(true);
             Faces.redirect("service-list.xhtml");
@@ -74,13 +67,13 @@ public class ServiceFormBean implements Serializable {
 
     public void save() throws NamingException, IOException {
         String msg;
-        if(services.getId() == null){
+        if(groupe.getId() == null){
 
-            serviceDao.insertService(services);
-            msg = "Service " + services.getName() + " created successfully";
+            groupeDao.insertGroupe(groupe);
+            msg = "Service " + groupe.getName() + " created successfully";
         }else{
-            serviceDao.MiseAjourService(services);
-            msg = "Service " + services.getName() + " updated successfully";
+            groupeDao.MiseAjourGroupe(groupe);
+            msg = "Service " + groupe.getName() + " updated successfully";
         }
         addDetailMessage(msg);
         Faces.getFlash().setKeepMessages(true);
@@ -88,10 +81,12 @@ public class ServiceFormBean implements Serializable {
     }
 
     public void clear() {
-        services = new Services();
+        groupe = new Groupe();
         id = null;
     }
     public boolean isNew() {
-        return services == null || services.getId() == null;
+        return groupe == null || groupe.getId() == null;
     }
 }
+
+

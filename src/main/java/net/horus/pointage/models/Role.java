@@ -57,7 +57,7 @@ public class Role  implements java.io.Serializable {
         this.name = name;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="role")
+@OneToMany(fetch=FetchType.EAGER, mappedBy="role")
     public Set<Users> getUserses() {
         return this.userses;
     }

@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.horus.pointage.beans;
 
-import net.horus.pointage.dao.ServiceDao;
-import net.horus.pointage.models.Services;
+import net.horus.pointage.dao.GroupeDao;
+import net.horus.pointage.dao.PointageParamDao;
+import net.horus.pointage.models.Groupe;
+import net.horus.pointage.models.PointageParam;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 
@@ -18,19 +15,14 @@ import java.io.Serializable;
 
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
 import static com.github.adminfaces.template.util.Assert.has;
-
-/**
- *
- * @author mbsdev
- */
 @Named
 @ViewScoped
-public class ServiceFormBean implements Serializable {
+public class ParamPointageFormBean  implements Serializable {
     private Integer id;
-    private Services services;
+    private PointageParam pointageParam;
 
     @Inject
-    private ServiceDao serviceDao;
+    private PointageParamDao pointageParamDao;
 
 
     public void init() {
@@ -38,9 +30,9 @@ public class ServiceFormBean implements Serializable {
             return;
         }
         if (has(id)) {
-            services = serviceDao.findById(id);
+            pointageParam = pointageParamDao.findById(id);
         } else {
-            services = new Services();
+            pointageParam = new PointageParam();
             System.out.println("ini");
         }
     }
@@ -54,18 +46,18 @@ public class ServiceFormBean implements Serializable {
         this.id = id;
     }
 
-    public Services getServices() {
-        return services;
+    public PointageParam getPointageParam() {
+        return pointageParam;
     }
 
-    public void setServices(Services services) {
-        this.services = services;
+    public void setPointageParam(PointageParam pointageParam) {
+        this.pointageParam = pointageParam;
     }
 
     public void remove() throws IOException, NamingException {
-        if(has(services) && has(services.getId())){
-            serviceDao.deleteService(services.getId());
-            addDetailMessage("Services " + services.getName()
+        if(has(pointageParam) && has(pointageParam.getId())){
+            pointageParamDao.deletePointageParam(pointageParam.getId());
+            addDetailMessage("PointageParam " + pointageParam.getId()
                     + " removed successfully");
             Faces.getFlash().setKeepMessages(true);
             Faces.redirect("service-list.xhtml");
@@ -74,13 +66,13 @@ public class ServiceFormBean implements Serializable {
 
     public void save() throws NamingException, IOException {
         String msg;
-        if(services.getId() == null){
+        if(pointageParam.getId() == null){
 
-            serviceDao.insertService(services);
-            msg = "Service " + services.getName() + " created successfully";
+            pointageParamDao.insertParamPointage(pointageParam);
+            msg = "Pointage Parametre " + pointageParam.getId() + " created successfully";
         }else{
-            serviceDao.MiseAjourService(services);
-            msg = "Service " + services.getName() + " updated successfully";
+            pointageParamDao.MiseAjourPointageParam(pointageParam);
+            msg = "Pointage Parametre " + pointageParam.getId() + " updated successfully";
         }
         addDetailMessage(msg);
         Faces.getFlash().setKeepMessages(true);
@@ -88,10 +80,13 @@ public class ServiceFormBean implements Serializable {
     }
 
     public void clear() {
-        services = new Services();
+        pointageParam = new PointageParam();
         id = null;
     }
     public boolean isNew() {
-        return services == null || services.getId() == null;
+        return pointageParam == null || pointageParam.getId() == null;
     }
 }
+
+
+

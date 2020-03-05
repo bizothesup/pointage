@@ -65,7 +65,7 @@ public class Groupe  implements java.io.Serializable {
         this.name = name;
     }
 
-@ManyToMany(fetch=FetchType.LAZY)
+@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="employe_groupe", catalog="pointage", joinColumns = { 
         @JoinColumn(name="groupe_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
         @JoinColumn(name="employe_id", nullable=false, updatable=false) })

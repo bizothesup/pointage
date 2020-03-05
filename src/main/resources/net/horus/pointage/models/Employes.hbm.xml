@@ -38,7 +38,7 @@
         <property name="photo" type="string">
             <column name="photo" length="50" />
         </property>
-        <set name="groupes" table="employe_groupe" inverse="false" lazy="true" fetch="select">
+        <set name="groupes" table="employe_groupe" inverse="false" lazy="false" fetch="select">
             <key>
                 <column name="employe_id" not-null="true" />
             </key>

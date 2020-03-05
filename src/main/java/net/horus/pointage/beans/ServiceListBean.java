@@ -3,9 +3,8 @@ package net.horus.pointage.beans;
 
 
 import com.github.adminfaces.starter.infra.model.Filter;
-import com.github.adminfaces.starter.model.Car;
-import net.horus.pointage.dao.RoleDao;
-import net.horus.pointage.models.Role;
+import net.horus.pointage.dao.ServiceDao;
+import net.horus.pointage.models.Services;
 import org.omnifaces.cdi.ViewScoped;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
@@ -15,11 +14,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.NamingException;
 import java.io.Serializable;
-import java.util.*;
-import net.horus.pointage.dao.GroupeDao;
-import net.horus.pointage.dao.ServiceDao;
-import net.horus.pointage.models.Groupe;
-import net.horus.pointage.models.Services;
+import java.util.List;
+import java.util.Map;
 
 
 @Named

@@ -72,18 +72,18 @@ public class ServiceDao  implements Serializable{
             
         }
         finally{
-            
+         this.hibernateUtils.closeSession();
         }
         return services;
     }
     
-    public int deleteService(String paramString) throws NamingException{
+    public int deleteService(Integer paramString) throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
         int result;
         try{
             transaction = session.beginTransaction();
-             result = session.createQuery("delete from services where id=:idService").setString("idService",paramString).executeUpdate();
+             result = session.createQuery("delete from services where id=:idService").setInteger("idService",paramString).executeUpdate();
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)
@@ -92,7 +92,7 @@ public class ServiceDao  implements Serializable{
             
         }
         finally{
-            
+            this.hibernateUtils.closeSession();
         }
         return result;
     }

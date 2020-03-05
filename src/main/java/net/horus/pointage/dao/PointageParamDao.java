@@ -39,7 +39,7 @@ public class PointageParamDao  implements Serializable{
         hibernateUtils = new HibernateUtils();
     }
     
-    public PointageParam insertRole(Role role) throws NamingException{
+    public PointageParam insertParamPointage(PointageParam pointageParam) throws NamingException{
         Session  session= this.hibernateUtils.getSession();
         Transaction transaction= null;
         try {transaction= session.beginTransaction();
@@ -77,13 +77,13 @@ public class PointageParamDao  implements Serializable{
         return pointageParam;
     }
     
-    public int deletePointageParam(String paramString) throws NamingException{
+    public int deletePointageParam(Integer paramString) throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
         int result;
         try{
             transaction = session.beginTransaction();
-             result = session.createQuery("delete from pointage_param where id=:idPointageParam").setString("idPointageParam",paramString).executeUpdate();
+             result = session.createQuery("delete from pointage_param where id=:idPointageParam").setInteger("idPointageParam",paramString).executeUpdate();
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)

@@ -182,7 +182,7 @@ public class Employes  implements java.io.Serializable {
         this.photo = photo;
     }
 
-@ManyToMany(fetch=FetchType.LAZY)
+@ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="employe_groupe", catalog="pointage", joinColumns = { 
         @JoinColumn(name="employe_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
         @JoinColumn(name="groupe_id", nullable=false, updatable=false) })
@@ -194,7 +194,7 @@ public class Employes  implements java.io.Serializable {
         this.groupes = groupes;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="employes")
+@OneToMany(fetch=FetchType.EAGER, mappedBy="employes")
     public Set<EmployeePointage> getEmployeePointages() {
         return this.employeePointages;
     }
@@ -203,7 +203,7 @@ public class Employes  implements java.io.Serializable {
         this.employeePointages = employeePointages;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="employes")
+@OneToMany(fetch=FetchType.EAGER, mappedBy="employes")
     public Set<CardRfid> getCardRfids() {
         return this.cardRfids;
     }
@@ -212,7 +212,7 @@ public class Employes  implements java.io.Serializable {
         this.cardRfids = cardRfids;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="employes")
+@OneToMany(fetch=FetchType.EAGER, mappedBy="employes")
     public Set<EmployeSortiePointage> getEmployeSortiePointages() {
         return this.employeSortiePointages;
     }

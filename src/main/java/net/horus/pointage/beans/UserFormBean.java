@@ -9,9 +9,14 @@ import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
 import static com.github.adminfaces.template.util.Assert.has;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.NamingException;
+import net.horus.pointage.dao.RoleDao;
 import net.horus.pointage.dao.UserDao;
 import net.horus.pointage.models.Users;
 import org.omnifaces.cdi.ViewScoped;
@@ -28,6 +33,17 @@ public class UserFormBean implements Serializable{
     private Users users;
     @Inject
     private UserDao userDao;
+    @Inject
+    private RoleDao roleDao;
+    
+    private List<SelectItem> listrole = new ArrayList<SelectItem>();
+    private Integer selectRole;
+    
+     @PostConstruct
+    public void loadRole(){
+         listrole.clear();
+        listrole = roleDao.selectRolesItems();
+    }
     
       public void init() {
         if (Faces.isAjaxRequest()) {
@@ -40,6 +56,7 @@ public class UserFormBean implements Serializable{
             System.out.println("ini");
         }
     }
+
 
     public Integer getId() {
         return id;
@@ -57,9 +74,23 @@ public class UserFormBean implements Serializable{
         this.users = users;
     }
 
-    
-    
-        public void remove() throws IOException, NamingException {
+    public List<SelectItem> getListrole() {
+        return listrole;
+    }
+
+    public void setListrole(List<SelectItem> listrole) {
+        this.listrole = listrole;
+    }
+
+    public Integer getSelectRole() {
+        return selectRole;
+    }
+
+    public void setSelectRole(Integer selectRole) {
+        this.selectRole = selectRole;
+    }
+
+    public void remove() throws IOException, NamingException {
             if(has(users) && has(users.getId())){
                userDao.deleteUsers(users.getId());
                 addDetailMessage("Users " + users.getLogin()
@@ -69,9 +100,14 @@ public class UserFormBean implements Serializable{
             }
     }
 
-    public void save() throws NamingException {
+    public void save() throws NamingException, IOException {
         String msg;
         if(users.getId() == null){
+            if(selectRole != null){
+                users.setRole(roleDao.selectRoleOne(selectRole));
+            }
+
+            users.setIsvalide(true);
             userDao.insertUsers(users);
             msg = "User " + users.getLogin() + " created successfully"; 
         }else{
@@ -79,6 +115,8 @@ public class UserFormBean implements Serializable{
           msg = "Users " + users.getLogin() + " updated successfully";
         }
         addDetailMessage(msg);
+        Faces.getFlash().setKeepMessages(true);
+        Faces.redirect("user-list.xhtml");
     }
 
     public void clear() {

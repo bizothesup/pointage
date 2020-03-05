@@ -16,7 +16,7 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="Ajouter" icon="fa fa-plus" action="/role-form?faces-redirect=true" styleClass="btn-primary"/>
+                        <p:commandButton value="Ajouter" icon="fa fa-plus" action="/service-form?faces-redirect=true" styleClass="btn-primary"/>
                     </div>
 
                     <p:dataTable widgetVar="serviceTable" var="c" value="#{serviceListBean.services}" rows="5"
@@ -39,12 +39,12 @@
                         </f:facet>
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
                         <p:column headerText="ID">
-                            <p:link value="#{c.id}" outcome="/role-form" >
+                            <p:link value="#{c.id}" outcome="/service-form" >
                                 <f:param name="id" value="#{c.id}"/>
                             </p:link>
                         </p:column>
                         <p:column headerText="Name">
-                            <h:outputText value="#{c.namet}"/>
+                            <h:outputText value="#{c.name}"/>
                         </p:column>
                     </p:dataTable>
                 </div>
