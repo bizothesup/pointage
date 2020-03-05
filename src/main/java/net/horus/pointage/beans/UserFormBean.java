@@ -96,7 +96,7 @@ public class UserFormBean implements Serializable{
                 addDetailMessage("Users " + users.getLogin()
                     + " removed successfully");
             Faces.getFlash().setKeepMessages(true);
-            Faces.redirect("user-list.jsf");
+            Faces.redirect("user-list.xhtml");
             }
     }
 

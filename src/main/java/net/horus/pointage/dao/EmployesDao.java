@@ -75,13 +75,13 @@ public class EmployesDao  implements Serializable{
         return employes;
     }
     
-    public int deleteEmploye(String paramString) throws NamingException{
+    public int deleteEmploye(Integer paramString) throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
         int result;
         try{
             transaction = session.beginTransaction();
-             result = session.createQuery("delete from employes where id=:idEmploye").setString("idEmploye",paramString).executeUpdate();
+             result = session.createQuery("delete from employes where id=:idEmploye").setInteger("idEmploye",paramString).executeUpdate();
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)
