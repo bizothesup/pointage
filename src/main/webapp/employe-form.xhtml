@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{employeFormBean.id}" converter="javax.faces.Long"/>
+            <!-- use view action if you are in a Java EE 7 server: <f:viewAction action="#{roleFomBean.init()}"/>-->
+            <f:event type="preRenderView" listener="#{employeFormBean.init}"/>
+        </f:metadata>
+        <ui:param name="renderFormAsterisks" value="true"/>
+    </ui:define>
+    <ui:define name="title">
+        Utilisateur Formulaire
+    </ui:define>
+    <ui:define name="body">
+        <adm:breadcrumb title="#{empty employeFormBean.id ? 'Ajouter Employés' : 'Employés'.concat(employeFormBean.id)}" link="/employe-form.jsf?id=#{employeFormBean.id}"/>
+        <h:form id="form" prependId="false">
+            <p:focus context="@form"/>
+            <p:panel styleClass="box-primary card">
+                <div id="main-buttons" class="hidden-sm hidden-xs">
+                    <p:commandButton value="Save" action="#{employeFormBean.save}" update="@form"
+                                     icon="fa fa-check" styleClass="btn-primary"/>
+                    <p:spacer width="5" rendered="#{employeFormBean.isNew()}"/>
+                    <p:commandButton value="Clear" action="#{employeFormBean.clear}" process="@this"
+                                     icon="fa fa-refresh" styleClass="btn-success"
+                                     update="@form" rendered="#{employeFormBean.isNew()}" resetValues="true"/>
+                    <p:spacer width="5" rendered="#{not employeFormBean.isNew()}"/>
+
+                    <p:commandButton value="Delete" action="#{employeFormBean.remove}" process="@this"
+                                     rendered="#{not employeFormBean.isNew()}" icon="fa fa-trash"
+                                     styleClass="btn-danger">
+                        <f:setPropertyActionListener value="true"
+                                                     target="#{facesContext.externalContext.flash.keepMessages}"/>
+                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
+                    </p:commandButton>
+                    <p:spacer width="5"/>
+                    <p:commandButton value="Back" immediate="true"
+                                     action="user-list?faces-redirect=true"
+                                     process="@this"
+                                     icon="fa fa-reply"/>
+                </div>
+                <p:splitButton value="Save" action="#{employeFormBean.save}" update="@form"
+                               icon="fa fa-check"
+                               styleClass="hidden-md hidden-lg btn-primary">
+                    <p:menuitem value="Reset" action="#{employeFormBean.clear}"
+                                process="@this" update="@form" rendered="#{employeFormBean.isNew()}"
+                                resetValues="true" icon="fa fa-refresh"/>
+                    <p:menuitem value="Delete" action="#{employeFormBean.remove}" process="@this"
+                                rendered="#{not employeFormBean.isNew()}" icon="fa fa-trash">
+                        <f:setPropertyActionListener value="true"
+                                                     target="#{facesContext.externalContext.flash.keepMessages}"/>
+                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
+                    </p:menuitem>
+                    <p:separator/>
+                    <p:menuitem value="Back" action="user-list?faces-redirect=true"
+                                process="@this" immediate="true"
+                                icon="fa fa-reply"/>
+                </p:splitButton>
+
+                <hr/>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Maricule" for="inptLogin"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptLogin" value="#{employeFormBean.employes.marticule}" required="true" readonly="true" styleClass="form-control ui-state-disabled" style="width: 100%"/>
+                            <span class="help-block">
+                                <p:message for="inptLogin" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Service" for="inptservice"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptservice" value="#{employeFormBean.employes.service}" required="true"/>
+                            <span class="help-block">
+                                <p:message for="inptservice" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Nom" for="inptNom"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptNom" value="#{employeFormBean.employes.nom}" required="true"/>
+                            <span class="help-block">
+                                <p:message for="inptNom" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Prénom" for="inptPrenom"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:inputText id="inptPrenom" value="#{employeFormBean.employes.prenom}" required="true"/>
+                            <span class="help-block">
+                                <p:message for="inptPrenom" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="date Naissance" for="inptdateNaisse"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:calendar id="inptdateNaisse" value="#{employeFormBean.employes.dateNaissance}" required="true"/>
+                            <span class="help-block">
+                                <p:message for="inptdateNaisse" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Lieu Naissance" for="inptLieuNaisse"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:calendar id="inptLieuNaisse" value="#{employeFormBean.employes.lieuNaissance}" required="true"/>
+                            <span class="help-block">
+                                <p:message for="inptLieuNaisse" />
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel value="Profession" for="inptprof"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11" >
+                            <p:calendar id="inptprof" value="#{employeFormBean.employes.profession}" required="true"/>
+                            <span class="help-block">
+                                <p:message for="inptprof" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

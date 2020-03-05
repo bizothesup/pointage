@@ -20,6 +20,7 @@ import net.horus.pointage.models.Employes;
 import net.horus.pointage.models.Users;
 import net.horus.pointage.utils.HibernateUtils;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -213,8 +214,16 @@ public class EmployesDao  implements Serializable{
             e.printStackTrace();
         }
         return null;
-    }  
+    }
 
+    public long countEmploye() throws NamingException {
+
+        Session session = this.hibernateUtils.getSession();
+        Query query = session.createQuery(" select count(*) from " + Employes.class.getName());
+        long i = (long) query.uniqueResult();
+        this.hibernateUtils.closeSession();
+        return i;
+    }
 }
 
 

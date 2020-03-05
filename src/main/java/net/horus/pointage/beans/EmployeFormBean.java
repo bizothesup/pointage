@@ -6,12 +6,16 @@ import net.horus.pointage.models.Employes;
 import net.horus.pointage.models.Employes;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
+import org.primefaces.util.DateUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static com.github.adminfaces.starter.util.Utils.addDetailMessage;
 import static com.github.adminfaces.template.util.Assert.has;
@@ -26,6 +30,14 @@ public class EmployeFormBean implements Serializable {
     @Inject
     private EmployesDao employesDao;
 
+    public String genMatricule() throws NamingException {
+        int num = (int) employesDao.countEmploye();
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(new Date());
+        int year = cal.get(Calendar.YEAR) ;
+        int nmb = num+1;
+        return "EMP000"+nmb+"/"+year;
+    }
 
     public void init() {
         if (Faces.isAjaxRequest()) {
@@ -35,6 +47,11 @@ public class EmployeFormBean implements Serializable {
             employes = employesDao.findById(id);
         } else {
             employes = new Employes();
+            try {
+                employes.setMarticule(genMatricule());
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
             System.out.println("ini");
         }
     }

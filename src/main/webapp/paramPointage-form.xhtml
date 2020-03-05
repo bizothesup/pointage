@@ -79,7 +79,7 @@
                             <p:outputLabel value="Heure Debut Service" for="inpthds"/>
                         </div>
                         <div class="ui-sm-12 ui-g-11" >
-                            <p:calendar id="inpthds" value="#{paramPointageFormBean.pointageParam.heureDebutService}" required="true">
+                            <p:calendar id="inpthds" value="#{paramPointageFormBean.pointageParam.heureDebutService}" required="true"  pattern="HH:mm" timeOnly="true">
                                 <f:convertDateTime pattern="HH:mm" />
                             </p:calendar>
                             <span class="help-block">
@@ -92,7 +92,7 @@
                             <p:outputLabel value="Heure Fin Service" for="inpthfs"/>
                         </div>
                         <div class="ui-sm-12 ui-g-11" >
-                            <p:calendar id="inpthfs" value="#{paramPointageFormBean.pointageParam.heureDebutService}" required="true">
+                            <p:calendar id="inpthfs" value="#{paramPointageFormBean.pointageParam.heureDebutService}"  pattern="HH:mm" timeOnly="true" required="true">
                                 <f:convertDateTime pattern="HH:mm" />
                             </p:calendar>
                             <span class="help-block">
