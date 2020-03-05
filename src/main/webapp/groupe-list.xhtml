@@ -6,20 +6,20 @@
                 template="#{layoutMB.template}">
 
     <ui:define name="metadata">
-        <ui:param name="title" value="Liste des Groupes"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. -->
+        <ui:param name="title" value="Liste des groupes"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. -->
     </ui:define>
     <ui:define name="description">
     </ui:define>
-    <ui:define name="body ">
+    <ui:define name="body">
         <h:form>
             <p:focus context="@form"/>
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="Ajouter" icon="fa fa-plus" action="/role-form?faces-redirect=true" styleClass="btn-primary"/>
+                        <p:commandButton value="Ajouter" icon="fa fa-plus" action="/service-form?faces-redirect=true" styleClass="btn-primary"/>
                     </div>
 
-                    <p:dataTable widgetVar="groupeTable" var="c" value="#{groupeListBean.groupes}" rows="5"
+                    <p:dataTable widgetVar="graoupeTable" var="c" value="#{groupeListBean.groupes}" rows="5"
                                  rowKey="#{c.id}" lazy="true" paginator="true"
                                  filteredValue="#{groupeListBean.filteredValue}"
                                  paginatorPosition="bottom" selection="#{groupeListBean.selectedGroupes}"
@@ -39,7 +39,7 @@
                         </f:facet>
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
                         <p:column headerText="ID">
-                            <p:link value="#{c.id}" outcome="/role-form" >
+                            <p:link value="#{c.id}" outcome="/service-form" >
                                 <f:param name="id" value="#{c.id}"/>
                             </p:link>
                         </p:column>

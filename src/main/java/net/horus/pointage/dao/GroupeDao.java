@@ -108,7 +108,7 @@ public class GroupeDao implements Serializable{
         List listGroupe;
         try{
             transaction = session.beginTransaction();
-             listGroupe = session.createQuery("from groupe").list();     
+             listGroupe = session.createQuery("from "+Groupe.class.getName()).list();     
         }
         finally{
             hibernateUtils.closeSession();

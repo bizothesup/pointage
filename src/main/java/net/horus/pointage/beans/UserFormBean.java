@@ -50,7 +50,7 @@ public class UserFormBean implements Serializable{
             return;
         }
         if (has(id)) {
-            users = users.findById(id);
+            users = userDao.findById(id);
         } else {
             users = new Users();
             System.out.println("ini");
