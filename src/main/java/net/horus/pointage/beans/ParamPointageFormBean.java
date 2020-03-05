@@ -60,7 +60,7 @@ public class ParamPointageFormBean  implements Serializable {
             addDetailMessage("PointageParam " + pointageParam.getId()
                     + " removed successfully");
             Faces.getFlash().setKeepMessages(true);
-            Faces.redirect("service-list.xhtml");
+            Faces.redirect("pointageParam.xhtml");
         }
     }
 
@@ -76,7 +76,7 @@ public class ParamPointageFormBean  implements Serializable {
         }
         addDetailMessage(msg);
         Faces.getFlash().setKeepMessages(true);
-        Faces.redirect("service-list.xhtml");
+        Faces.redirect("pointageParam.xhtml");
     }
 
     public void clear() {

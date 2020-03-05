@@ -50,7 +50,7 @@ public class UserFormBean implements Serializable{
             return;
         }
         if (has(id)) {
-            users = users.findById(id);
+            users = userDao.findById(id);
         } else {
             users = new Users();
             System.out.println("ini");
@@ -96,7 +96,7 @@ public class UserFormBean implements Serializable{
                 addDetailMessage("Users " + users.getLogin()
                     + " removed successfully");
             Faces.getFlash().setKeepMessages(true);
-            Faces.redirect("user-list.jsf");
+            Faces.redirect("user-list.xhtml");
             }
     }
 
