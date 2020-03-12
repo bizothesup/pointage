@@ -236,6 +236,18 @@ public class CardRfidDao  implements Serializable{
         return null;
     }
     
+    public CardRfid findByNumCard(String numCard) {
+        try {
+            return selectCardRfid().stream()
+                    .filter(c -> c.getNumeroCarte().equals(numCard))
+                    .findFirst()
+                    .orElseThrow(() -> new BusinessException(" CardRfid not found with num " + numCard));
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     
     
 }

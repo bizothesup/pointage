@@ -6,6 +6,7 @@
 package net.horus.pointage.beans;
 
 import com.github.adminfaces.starter.infra.model.Filter;
+import com.github.adminfaces.template.exception.BusinessException;
 import org.omnifaces.cdi.ViewScoped;
 
 import javax.annotation.PostConstruct;
@@ -33,13 +34,15 @@ public class CardRfidListBean implements Serializable {
 
     @Inject
     private CardRfidDao cardRfidDao;
+    
     private CardRfid cardRfid;
     private Integer id;
+    private String numCard;
     private LazyDataModel<CardRfid> cardRfids;
 
     private Filter<CardRfid> filter = new Filter<>(new CardRfid());
 
-    private List<CardRfid> selectedCardRfid; //cars selected in checkbox column
+    List<CardRfid> selectedCardRfid; //cars selected in checkbox column
 
     private List<CardRfid> filteredValue;// datatable filteredValue attribute (column filters)
     private String action;
@@ -82,7 +85,13 @@ public class CardRfidListBean implements Serializable {
             }
         };
     }
-
+    
+   public void findCarByNumCardOrMatEmploye(String numCard) {
+        if (numCard == null) {
+            throw new BusinessException("Provide Car ID to load");
+        }
+        selectedCardRfid.add(cardRfidDao.findByNumCard(numCard));
+    }
     public String getAction() {
         return action;
     }
@@ -98,6 +107,17 @@ public class CardRfidListBean implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getNumCard() {
+        return numCard;
+    }
+
+    public void setNumCard(String numCard) {
+        this.numCard = numCard;
+    }
+    
+    
+    
 
     public CardRfidDao getCardRfidDao() {
         return cardRfidDao;

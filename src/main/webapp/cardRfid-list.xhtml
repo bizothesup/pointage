@@ -18,7 +18,7 @@
                     <div id="main-buttons" class="hidden-sm hidden-xs">
                         <p:commandButton value="Ajouter" icon="fa fa-plus" action="/role-form?faces-redirect=true" styleClass="btn-primary"/>
                     </div>
-
+                    
                     <p:dataTable widgetVar="cardrfidTable" var="c" value="#{cardRfidListBean.cardRfids}" rows="5"
                                  rowKey="#{c.id}" lazy="true" paginator="true"
                                  filteredValue="#{cardRfidListBean.filteredValue}"
@@ -33,10 +33,22 @@
                         <p:ajax event="rowSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="rowUnselect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="toggleSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
-
                         <f:facet name="header">
-
+                           <div class="box">
+                               N° Carte: <p:inputNumber id="inptNumCard" decimalPlaces="0" thousandSeparator="" decimalSeparator="" value="#{cardRfidListBean.numCard}"/>
+                            <p:spacer height="5"/>
+                             Mle Employé: <p:inputNumber id="inptMatEmploye" decimalPlaces="0" thousandSeparator="" decimalSeparator="" value=""/>
+                            <p:spacer height="5"/>
+                            <p:commandButton id="brFind"
+                                             value="Rechercher"
+                                             action="#{cardRfidListBean.findCarByNumCardOrMatEmploye(cardRfidListBean.numCard)}"
+                                             process="@form"
+                                             update="@form"
+                                             styleClass="btn-flat bg-black btn-states"
+                                             partialSubmit="true"/>
+                            </div>
                         </f:facet>
+                       
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
                         <p:column headerText="ID">
                             <p:link value="#{c.id}" outcome="/car-form" >

@@ -35,7 +35,16 @@
                         <p:ajax event="toggleSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
 
                         <f:facet name="header">
-
+                            <div class='box'>
+                                Mle Employé :  <p:inputText id="inptMatEmploye" value=""/>
+                                Nom :  <p:inputText id="inptNomEmploye" value=""/>
+                                Prenom :  <p:inputText id="inptPrenomEmploye" value=""/>
+                                Service :  <p:inputText id="inptServiceEmploye" value=""/>
+                                <p:commandButton
+                                    id="brFind" 
+                                    value="Rechercher"
+                                    styleClass="btn-flat bg-black btn-states"/>
+                            </div>
                         </f:facet>
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
                         <p:column headerText="ID">
