@@ -72,22 +72,42 @@
                         </p:column>
                         <p:column headerText="nom et prenom" filterBy="#{c.employes.nom}">
                             <f:facet name="filter"  >
-                                 <p:inputText value="#{mouvementListBean.filter.entity.employes.nom}">
+                                 <p:inputText value="#{mouvementListBean.filter.entity.marticuleEmploye}">
                                     <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
                                 </p:inputText>
                             </f:facet>
                             <h:outputText value="#{c.employes.nom.concat(' ').concat(c.employes.prenom)}"/>
                         </p:column>
-                        <p:column headerText="date">
+                        <p:column headerText="date" filterBy="#{c.jour}">
+                            <f:facet name="filter"  >
+                                 <p:inputText value="#{mouvementListBean.filter.entity.jour}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.jour}"/>
                         </p:column>
-                        <p:column headerText="heure sortie">
+                         <p:column headerText="heure sortie" filterBy="#{c.heureSortie}">
+                            <f:facet name="filter"  >
+                                 <p:inputText value="#{mouvementListBean.filter.entity.heureSortie}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.heureSortie}"/>
                         </p:column>
-                        <p:column headerText="heure retour">
+                        <p:column headerText="heure retour" filterBy="#{c.heureRetour}">
+                            <f:facet name="filter"  >
+                                 <p:inputText value="#{mouvementListBean.filter.entity.heureRetour}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.heureRetour}"/>
                         </p:column>
-                        <p:column headerText="Carte/badge">
+                       <p:column headerText="Carte/badge" filterBy="#{c.numeroCarte}">
+                            <f:facet name="filter"  >
+                                 <p:inputText value="#{mouvementListBean.filter.entity.numeroCarte}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.numeroCarte}"/>
                         </p:column>
                     </p:dataTable>
