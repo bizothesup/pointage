@@ -34,7 +34,7 @@
                         <p:ajax event="rowUnselect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="toggleSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
 
-                        <f:facet name="header">
+                     <!--   <f:facet name="header">
                             <div class="box"  >
                                 Mle Employé :  <p:inputText id="inptMatEmploye" value=""/>
                                 Nom :  <p:inputText id="inptNomEmploye" value="" />
@@ -50,16 +50,32 @@
                                              partialSubmit="true"/>
                             </div>
                         </f:facet>
+                     --> 
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
-                        <p:column headerText="ID">
+                        <p:column headerText="ID" filterBy="#{c.id}">
+                             <f:facet name="filter" >
+                                 <p:inputText value="#{mouvementListBean.filter.entity.id}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <p:link value="#{c.id}" outcome="/car-form" >
                                 <f:param name="id" value="#{c.id}"/>
                             </p:link>
                         </p:column>
-                        <p:column headerText="Matricule Employe">
+                        <p:column headerText="Matricule Employe" filterBy="#{c.marticuleEmploye}">
+                            <f:facet name="filter" >
+                                 <p:inputText value="#{mouvementListBean.filter.entity.marticuleEmploye}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.marticuleEmploye}"/>
                         </p:column>
-                        <p:column headerText="nom et prenom">
+                        <p:column headerText="nom et prenom" filterBy="#{c.employes.nom}">
+                            <f:facet name="filter"  >
+                                 <p:inputText value="#{mouvementListBean.filter.entity.employes.nom}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.employes.nom.concat(' ').concat(c.employes.prenom)}"/>
                         </p:column>
                         <p:column headerText="date">

@@ -33,35 +33,41 @@
                         <p:ajax event="rowSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="rowUnselect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="toggleSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
-                        <f:facet name="header">
-                           <div class="box">
-                               N° Carte: <p:inputNumber id="inptNumCard" decimalPlaces="0" thousandSeparator="" decimalSeparator="" value="#{cardRfidListBean.numCard}"/>
-                            <p:spacer height="5"/>
-                             Mle Employé: <p:inputNumber id="inptMatEmploye" decimalPlaces="0" thousandSeparator="" decimalSeparator="" value=""/>
-                            <p:spacer height="5"/>
-                            <p:commandButton id="brFind"
-                                             value="Rechercher"
-                                             action="#{cardRfidListBean.findCarByNumCardOrMatEmploye(cardRfidListBean.numCard)}"
-                                             process="@form"
-                                             update="@form"
-                                             styleClass="btn-flat bg-black btn-states"
-                                             partialSubmit="true"/>
-                            </div>
-                        </f:facet>
+                        
                        
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
-                        <p:column headerText="ID">
+                        <p:column headerText="ID" filterBy="#{c.id}" sortBy="#{c.id}" filterMatchMode="exact" >
+                            <f:facet name="filter">
+                                <p:inputText value="#{cardRfidListBean.filter.entity.id}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('cardrfidTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <p:link value="#{c.id}" outcome="/car-form" >
                                 <f:param name="id" value="#{c.id}"/>
                             </p:link>
                         </p:column>
-                        <p:column headerText="numero carte">
-                            <h:outputText value="#{c.numeroCarte}"/>
+                        <p:column headerText="numero carte" filterBy="#{c.numeroCarte}" sortBy="#{c.numeroCarte}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{cardRfidListBean.filter.entity.numeroCarte}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('cardrfidTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.numeroCarte}
                         </p:column>
-                        <p:column headerText="identifiant">
-                            <h:outputText value="#{c.identifiantCarte}"/>
+                        <p:column headerText="identifiant" filterBy="#{c.identifiantCarte}" sortBy="#{c.identifiantCarte}" >
+                            <f:facet name="filter">
+                                <p:inputText value="#{cardRfidListBean.filter.entity.identifiantCarte}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('cardrfidTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.identifiantCarte}"
                         </p:column>
-                        <p:column headerText="matricule employé">
+                        <p:column headerText="matricule employé" filterBy="#{c.maricule}" sortBy="#{c.maricule}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{cardRfidListBean.filter.entity.maricule}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('cardrfidTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.maricule}"/>
                         </p:column>
                     </p:dataTable>

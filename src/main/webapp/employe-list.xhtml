@@ -25,56 +25,82 @@
                                  paginatorPosition="bottom" selection="#{employeListBean.selectedEmploye}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {JumpToPageDropdown}"
                                  currentPageReportTemplate="[ {startRecord} to {endRecord} of {totalRecords} ]"
-                                 rowsPerPageTemplate="5,10,15,20,30"
-                    >
+                                 rowsPerPageTemplate="5,10,15,20,30">
 
                         <p:ajax event="rowSelectCheckbox" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="rowUnselectCheckbox" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="rowSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="rowUnselect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="toggleSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
-
-                        <f:facet name="header">
-                            <div class='box'>
-                                Mle Employé :  <p:inputText id="inptMatEmploye" value=""/>
-                                Nom :  <p:inputText id="inptNomEmploye" value=""/>
-                                Prenom :  <p:inputText id="inptPrenomEmploye" value=""/>
-                                Service :  <p:inputText id="inptServiceEmploye" value=""/>
-                                <p:commandButton
-                                    id="brFind" 
-                                    value="Rechercher"
-                                    styleClass="btn-flat bg-black btn-states"/>
-                            </div>
-                        </f:facet>
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
-                        <p:column headerText="ID">
+                        <p:column headerText="ID" sortBy="#{c.id} "  filterBy="#{c.id}" filterMatchMode="contains">
                             <p:link value="#{c.id}" outcome="/employe-form" >
                                 <f:param name="id" value="#{c.id}"/>
                             </p:link>
                         </p:column>
-                        <p:column headerText="matricule">
-                            <h:outputText value="#{c.marticule}"/>
+                        <p:column headerText="matricule" filterBy="#{c.marticule}" sortBy="#{c.marticule}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employeListBean.filter.entity.marticule}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.marticule}
                         </p:column>
-                        <p:column headerText="nom et prenom">
-                            <h:outputText value="#{c.nom.concat(' ').concat(c.prenom)}"/>
+                        <p:column headerText="nom et prenom" sortBy="#{c.nom}" filterBy="#{c.nom}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employeListBean.filter.entity.nom}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.nom.concat(' ').concat(c.prenom)}
                         </p:column>
-                        <p:column headerText="date naissance">
-                            <h:outputText value="#{c.dateNaissance}"/>
+                        <p:column headerText="date naissance" sortBy="#{c.dateNaissance}" filterBy="#{c.dateNaissance}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employeListBean.filter.entity.dateNaissance}">
+              
+                                </p:inputText>
+                            </f:facet>
+                            #{c.dateNaissance}
                         </p:column>
-                        <p:column headerText="lieu naissance">
-                            <h:outputText value="#{c.lieuNaissance}"/>
+                        <p:column headerText="lieu naissance" filterBy="#{c.lieuNaissance}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employeListBean.filter.entity.lieuNaissance}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.lieuNaissance}
                         </p:column>
-                        <p:column headerText="profession">
-                            <h:outputText value="#{c.profession}"/>
+                        <p:column headerText="profession" sortBy="#{c.profession}" filterBy="#{c.profession}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employeListBean.filter.entity.profession}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.profession}
                         </p:column>
-                        <p:column headerText="service">
-                            <h:outputText value="#{c.service}"/>
+                        <p:column headerText="service" filterBy="#{c.service}" sortBy="#{c.service}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employeListBean.filter.entity.service}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.service}
                         </p:column>
-                        <p:column headerText="email">
-                            <h:outputText value="#{c.email}"/>
+                        <p:column headerText="email" filterBy="#{c.email}" sortBy="#{c.email}">
+                            <f:facet name="filter" >
+                                <p:inputText value="#{employeListBean.filter.entity.email}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                           #{c.email}
                         </p:column>
-                        <p:column headerText="adresse">
-                            <h:outputText value="#{c.adresse}"/>
+                        <p:column headerText="adresse" sortBy="#{c.adresse}" filterBy="#{c.adresse}"> 
+                            <f:facet name="filter" >
+                                <p:inputText value="#{employeListBean.filter.entity.adresse}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
+                            #{c.adresse}
                         </p:column>
                     </p:dataTable>
                 </div>

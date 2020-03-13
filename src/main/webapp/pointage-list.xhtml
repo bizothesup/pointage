@@ -38,33 +38,78 @@
 
                         </f:facet>
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
-                        <p:column headerText="ID">
+                        <p:column headerText="ID" sortBy="#{c.id}" filterBy="#{c.id}">
+                             <f:facet name="filter" >
+                                 <p:inputText value="#{employePointageListBean.filter.entity.id}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <p:link value="#{c.id}" outcome="/service-form" >
                                 <f:param name="id" value="#{c.id}"/>
                             </p:link>
                         </p:column>
-                        <p:column headerText="Matricule">
+                        <p:column headerText="Matricule" sortBy="#{c.matriculeEmploye}" filterBy="#{c.matriculeEmploye}">
+                            <f:facet name="filter" >
+                                <p:inputText value="#{employePointageListBean.filter.entity.matriculeEmploye}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.matriculeEmploye}"/>
                         </p:column>
-                        <p:column headerText="date service">
+                        <p:column headerText="date service" filterBy="#{c.dateService}" sortBy="#{c.dateService}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employePointageListBean.filter.entity.dateService}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.dateService}"/>
                         </p:column>
-                        <p:column headerText="Carte/Badge">
+                        <p:column headerText="Carte/Badge" filterBy="#{c.numeroCarte}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employePointageListBean.filter.entity.numeroCarte}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.numeroCarte}"/>
                         </p:column>
-                        <p:column headerText="Mois">
+                        <p:column headerText="Mois" filterBy="#{c.mois}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employePointageListBean.filter.entity.mois}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.mois}"/>
                         </p:column>
-                        <p:column headerText="Année">
+                        <p:column headerText="Année" filterBy="#{c.annees}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employePointageListBean.filter.entity.annees}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.annees}"/>
                         </p:column>
-                        <p:column headerText="Heure suppl">
+                        <p:column headerText="Heure suppl" filterBy="#{c.heureSupAutorize}">
+                            <f:facet name="filter">
+                                <p:inputText value="#{employePointageListBean.filter.entity.heureSupAutorize}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.heureSupAutorize}"/>
                         </p:column>
-                        <p:column headerText="Heure debut service">
+                        <p:column headerText="Heure debut service" filterBy="#{c.heurDebutService}">
+                             <f:facet name="filter" >
+                                <p:inputText value="#{employePointageListBean.filter.entity.heurDebutService}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.heurDebutService}"/>
                         </p:column>
-                        <p:column headerText="Heure fin service">
+                        <p:column headerText="Heure fin service" filterBy="#{c.heurFinService}">
+                            <f:facet name="filter" >
+                                <p:inputText value="#{employePointageListBean.filter.entity.heurFinService}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeePintageTable').filter()"/>
+                                </p:inputText>
+                            </f:facet>
                             <h:outputText value="#{c.heurFinService}"/>
                         </p:column>
                     </p:dataTable>
