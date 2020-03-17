@@ -7,6 +7,7 @@ import org.hibernate.cfg.Configuration;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class HibernateUtils {
     private SessionFactory sessionFactory;
@@ -61,5 +62,12 @@ public class HibernateUtils {
                 session.close();
         }
     }
+    
+    
+    public String hashPassword(String plainTextPassword){
+		return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+    }
+    
+    
 
 }

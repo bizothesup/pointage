@@ -33,8 +33,16 @@
                         <p:ajax event="rowSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="rowUnselect" update="@(.ui-button, .ui-confirm-dialog)"/>
                         <p:ajax event="toggleSelect" update="@(.ui-button, .ui-confirm-dialog)"/>
+                        <!--  <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all:"/>
+                                <p:inputText value = "#{mouvementListBean.filter.entity.id}">
+                                    <p:ajax process="@this" update="@none" oncomplete="PF('employeSortiePointageTable').filter()"/>
+                                </p:inputText>
+                            </p:outputPanel>
+                        </f:facet>
 
-                     <!--   <f:facet name="header">
+                      <f:facet name="header">
                             <div class="box"  >
                                 Mle Employé :  <p:inputText id="inptMatEmploye" value=""/>
                                 Nom :  <p:inputText id="inptNomEmploye" value="" />

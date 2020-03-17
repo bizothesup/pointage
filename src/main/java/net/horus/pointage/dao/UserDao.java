@@ -40,6 +40,7 @@ public class UserDao  implements Serializable{
         Session  session= this.hibernateUtils.getSession();
         Transaction transaction= null;
         try {transaction= session.beginTransaction();
+        users.setPassword(hibernateUtils.hashPassword(users.getPassword()));
         session.save(users);
         transaction.commit();
         }catch(HibernateException hibernateException)
@@ -49,7 +50,7 @@ public class UserDao  implements Serializable{
             throw hibernateException;
         }
         finally{
-            
+            hibernateUtils.closeSession();
         }
         return users;
     }
@@ -60,6 +61,7 @@ public class UserDao  implements Serializable{
         Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
+            users.setPassword(hibernateUtils.hashPassword(users.getPassword()));
             session.update(users);
             transaction.commit();       
         }catch(HibernateException hibernateException){
@@ -231,5 +233,7 @@ public class UserDao  implements Serializable{
             e.printStackTrace();
         }
         return null;
-    }  
+    }
+    
+    
 }

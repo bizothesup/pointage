@@ -27,6 +27,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import static com.github.adminfaces.template.util.Assert.has;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -231,8 +233,13 @@ public class RoleDao  implements Serializable{
         }
         return null;
     }
-    public Role selectRoleOne(Integer id) throws NamingException {
-        Session paramSession = this.hibernateUtils.getSession();
+    public Role selectRoleOne(Integer id) {
+        Session paramSession = null;
+        try {
+            paramSession = this.hibernateUtils.getSession();
+        } catch (NamingException ex) {
+            Logger.getLogger(RoleDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Query query = paramSession.createQuery(" from "+Role.class.getName()+" where id=:id").setInteger("id",id);
         query.setMaxResults(1);
         List list = query.list();

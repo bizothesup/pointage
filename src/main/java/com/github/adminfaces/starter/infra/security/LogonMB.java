@@ -19,6 +19,7 @@ import org.omnifaces.util.Messages;
 
 import javax.inject.Inject;
 import javax.naming.NamingException;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Created by rmpestano on 12/20/14.
@@ -44,6 +45,8 @@ public class LogonMB extends AdminSession implements Serializable {
 
     public LogonMB(){
         hibernateUtils = new HibernateUtils();
+       // password = hibernateUtils.hashPassword(password);
+        
     }
 
     @Inject
@@ -51,31 +54,38 @@ public class LogonMB extends AdminSession implements Serializable {
 
 
     public void login() throws IOException, NamingException {
+        
+        
+        
         Session session = hibernateUtils.getSession();
+       // System.out.println("mot de passe "+hibernateUtils.password);
 
-        Query query = session.createQuery("from "+ Users.class.getName()+" where login =:login and password =:password ").setString("login", login).setString("password", password).setMaxResults(1);
-        System.out.println(query.list().size() > 0);
+        Query query = session.createQuery("from "+ Users.class.getName()+" where login =:login ").setString("login", login);
+        System.out.println("resultat de la requette"+query.list().size());
         if(query.list().size() > 0){
-            users = (Users) query.list().get(0);
-            if(users != null && users.getIsvalide()==true){
-                currentUser = users;
-                addDetailMessage("Logged in successfully as <b>" + currentUser.getLogin() + "</b>");
-                Faces.getExternalContext().getFlash().setKeepMessages(true);
-                Faces.redirect(adminConfig.getIndexPage());
+            for(int i=0; i<query.list().size(); i++){
+                users = (Users) query.list().get(i);
+                if (BCrypt.checkpw(password, users.getPassword()))
+                {
+                    if(users.getIsvalide()==true){
+                        currentUser = users;
+                        addDetailMessage("Logged in successfully as <b>" + currentUser.getLogin() + "</b>");
+                        Faces.getExternalContext().getFlash().setKeepMessages(true);
+                        Faces.redirect(adminConfig.getIndexPage());
+                    }
+                    else{
+                        Messages.addGlobalError("Compte inactif.");
+                        Messages.addInfo(null,"Utilisateur n'existe pas ");
+                        Faces.redirect(adminConfig.getIndexPage());
+                    }
+                }
+                else {
+                    Messages.addGlobalError("Unknown login, please try again.");
+                    Messages.addInfo(null,"Utilisateur n'existe pas ");
+                    Faces.redirect(adminConfig.getIndexPage());
+                }
             }
-        else{
-                Messages.addGlobalError("Compte inactif.");
-                Messages.addInfo(null,"Utilisateur n'existe pas ");
-                Faces.redirect(adminConfig.getIndexPage());
-            }
-        }else {
-            Messages.addGlobalError("Unknown login, please try again.");
-            Messages.addInfo(null,"Utilisateur n'existe pas ");
-            Faces.redirect(adminConfig.getIndexPage());
         }
-
-
-
     }
 
     @Override
