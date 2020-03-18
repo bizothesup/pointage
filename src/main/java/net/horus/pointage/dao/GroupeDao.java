@@ -5,10 +5,8 @@
  */
 package net.horus.pointage.dao;
 
-import com.github.adminfaces.starter.infra.model.Filter;
-import com.github.adminfaces.starter.infra.model.SortOrder;
-import com.github.adminfaces.template.exception.BusinessException;
-import static com.github.adminfaces.template.util.Assert.has;
+import java.io.Serializable;
+import javax.ejb.Stateless;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,33 +15,39 @@ import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
 import javax.naming.NamingException;
-import net.horus.pointage.models.EmployeePointage;
+
+import com.github.adminfaces.starter.infra.model.Filter;
+import com.github.adminfaces.starter.infra.model.SortOrder;
+import com.github.adminfaces.template.exception.BusinessException;
 import net.horus.pointage.models.Groupe;
 import net.horus.pointage.models.Role;
+import net.horus.pointage.models.Services;
 import net.horus.pointage.utils.HibernateUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import static com.github.adminfaces.template.util.Assert.has;
+
 /**
  *
- * @author A. TRAORE
+ * @author mbsdev
  */
 @Stateless
-public class EmployePointageDao  implements Serializable{
-    private HibernateUtils hibernateUtils;
+public class GroupeDao implements Serializable{
+     private HibernateUtils hibernateUtils;
     
-    private EmployeePointage employeePointage;
+    private Groupe groupe;
     
-    public  EmployePointageDao(){
+    public  GroupeDao(){
         hibernateUtils = new HibernateUtils();
     }
     
-    public EmployeePointage insertEmployePointage(EmployeePointage employeePointage) throws NamingException{
+    public Groupe insertGroupe(Groupe groupe) throws NamingException{
         Session  session= this.hibernateUtils.getSession();
         Transaction transaction= null;
         try {transaction= session.beginTransaction();
-        session.save(employeePointage);
+        session.save(groupe);
         transaction.commit();
         }catch(HibernateException hibernateException)
         {
@@ -52,18 +56,18 @@ public class EmployePointageDao  implements Serializable{
             throw hibernateException;
         }
         finally{
-            
+          hibernateUtils.closeSession();
         }
-        return employeePointage;
+        return groupe;
     }
     
     
-    public EmployeePointage MiseAjourPointage(EmployeePointage employeePointage) throws NamingException{
+    public Groupe MiseAjourGroupe(Groupe groupe) throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
-            session.update(employeePointage);
+            session.update(groupe);
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)
@@ -72,18 +76,18 @@ public class EmployePointageDao  implements Serializable{
             
         }
         finally{
-            
+            hibernateUtils.closeSession();
         }
-        return employeePointage;
+        return groupe;
     }
     
-    public int deleteEmployePointage(String paramString) throws NamingException{
+    public int deleteGroupe(Integer paramString) throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
         int result;
         try{
             transaction = session.beginTransaction();
-             result = session.createQuery("delete from employee_pointage where id=:idEmployePointage").setString("idEmployePointage",paramString).executeUpdate();
+             result = session.createQuery("delete from groupe where id=:idGroupe").setInteger("idGroupe",paramString).executeUpdate();
             transaction.commit();       
         }catch(HibernateException hibernateException){
             if(transaction != null)
@@ -92,32 +96,49 @@ public class EmployePointageDao  implements Serializable{
             
         }
         finally{
-            
+            hibernateUtils.closeSession();
         }
         return result;
     }
     
     
-    public List<EmployeePointage> selectEmployeePointages() throws NamingException{
+    public List<Groupe> selectGroupes() throws NamingException{
         Session session = this.hibernateUtils.getSession();
         Transaction transaction = null;
-        List listEmployeePointage;
+        List listGroupe;
         try{
             transaction = session.beginTransaction();
-             listEmployeePointage = session.createQuery("from "+EmployeePointage.class.getName()).list();     
+             listGroupe = session.createQuery("from "+Groupe.class.getName()).list();     
         }
         finally{
             hibernateUtils.closeSession();
         }
-        return listEmployeePointage;
+        return listGroupe;
     }
     
     
-    public List<EmployeePointage> paginate(Filter<EmployeePointage> filter)  {
-        List<EmployeePointage> pagedEmployeePointage = new ArrayList<>();
+     public List<SelectItem> selectGroupesItems() throws NamingException{
+        Session session = this.hibernateUtils.getSession();
+        List listGroupe;
+        ArrayList arraylist= new ArrayList();
+        try{
+             listGroupe = session.createQuery("from groupe").list();  
+             if(listGroupe.size()!=0){
+                 for (byte b=0; b<listGroupe.size(); b++)
+                     arraylist.add(new SelectItem(((Groupe)listGroupe.get(b)).getName()));
+             }      
+        }
+        finally{
+            hibernateUtils.closeSession();
+        }
+        return arraylist;
+    }
+
+    public List<Groupe> paginate(Filter<Groupe> filter)  {
+        List<Groupe> pagedGroupe = new ArrayList<>();
         if(has(filter.getSortOrder()) && !SortOrder.UNSORTED.equals(filter.getSortOrder())) {
             try {
-                pagedEmployeePointage = selectEmployeePointages().stream().
+                pagedGroupe = selectGroupes().stream().
                         sorted((c1, c2) -> {
                             if (filter.getSortOrder().isAscending()) {
                                 return c1.getId().compareTo(c2.getId());
@@ -134,18 +155,18 @@ public class EmployePointageDao  implements Serializable{
         int page = filter.getFirst() + filter.getPageSize();
         if (filter.getParams().isEmpty()) {
             try {
-                pagedEmployeePointage = pagedEmployeePointage.subList(filter.getFirst(), page > selectEmployeePointages().size() ? selectEmployeePointages().size() : page);
+                pagedGroupe = pagedGroupe.subList(filter.getFirst(), page > selectGroupes().size() ? selectGroupes().size() : page);
             } catch (NamingException e) {
                 e.printStackTrace();
             }
-            return pagedEmployeePointage;
+            return pagedGroupe;
         }
 
-        List<Predicate<EmployeePointage>> predicates = configFilter(filter);
+        List<Predicate<Groupe>> predicates = configFilter(filter);
 
-        List<EmployeePointage> pagedList = null;
+        List<Groupe> pagedList = null;
         try {
-            pagedList = selectEmployeePointages().stream().filter(predicates
+            pagedList = selectGroupes().stream().filter(predicates
                     .stream().reduce(Predicate::or).orElse(t -> true))
                     .collect(Collectors.toList());
         } catch (NamingException e) {
@@ -171,52 +192,36 @@ public class EmployePointageDao  implements Serializable{
         return pagedList;
     }
 
-    private List<Predicate<EmployeePointage>> configFilter(Filter<EmployeePointage> filter) {
-        List<Predicate<EmployeePointage>> predicates = new ArrayList<>();
+    private List<Predicate<Groupe>> configFilter(Filter<Groupe> filter) {
+        List<Predicate<Groupe>> predicates = new ArrayList<>();
         if (filter.hasParam("id")) {
-            Predicate<EmployeePointage> idPredicate = (EmployeePointage c) -> c.getId().equals(filter.getParam("id"));
+            Predicate<Groupe> idPredicate = (Groupe c) -> c.getId().equals(filter.getParam("id"));
             predicates.add(idPredicate);
         }
 
         if (has(filter.getEntity())) {
-            EmployeePointage filterEntity = filter.getEntity();
+            Groupe filterEntity = filter.getEntity();
 
 
-            if (has(filterEntity.getMatriculeEmploye())) {
-                Predicate<EmployeePointage> matriculeEmployePredicate = (EmployeePointage c) -> c.getMatriculeEmploye().toLowerCase().contains(filterEntity.getMatriculeEmploye().toLowerCase());
-                predicates.add(matriculeEmployePredicate);
-            }
-            if (has(filterEntity.getDateService())) {
-                Predicate<EmployeePointage> dateServicePredicate = (EmployeePointage c) -> c.getDateService().equals(filterEntity.getDateService());
-                predicates.add(dateServicePredicate);
-            }
-            if (has(filterEntity.getNumeroCarte())) {
-                Predicate<EmployeePointage> numCartePredicate = (EmployeePointage c) -> c.getNumeroCarte().toLowerCase().contains(filterEntity.getNumeroCarte().toLowerCase());
-                predicates.add(numCartePredicate);
-            }
-            if (has(filterEntity.getMois())) {
-                Predicate<EmployeePointage> moisPredicate = (EmployeePointage c) -> c.getMois().equals(filterEntity.getMois());
-                predicates.add(moisPredicate);
-            }
-            if (has(filterEntity.getAnnees())) {
-                Predicate<EmployeePointage> anneePredicate = (EmployeePointage c) -> c.getAnnees().equals(filterEntity.getAnnees());
-                predicates.add(anneePredicate);
+            if (has(filterEntity.getName())) {
+                Predicate<Groupe> NamePredicate = (Groupe c) -> c.getName().toLowerCase().contains(filterEntity.getName().toLowerCase());
+                predicates.add(NamePredicate);
             }
 
         }
         return predicates;
     }
 
-    public long count(Filter<EmployeePointage> filter) throws NamingException {
-        return selectEmployeePointages().stream()
+    public long count(Filter<Groupe> filter) throws NamingException {
+        return selectGroupes().stream()
                 .filter(configFilter(filter).stream()
                         .reduce(Predicate::or).orElse(t -> true))
                 .count();
     }
 
-    public EmployeePointage findById(Integer id) {
+    public Groupe findById(Integer id) {
         try {
-            return selectEmployeePointages().stream()
+            return selectGroupes().stream()
                     .filter(c -> c.getId().equals(id))
                     .findFirst()
                     .orElseThrow(() -> new BusinessException(" User not found with id " + id));
@@ -225,25 +230,4 @@ public class EmployePointageDao  implements Serializable{
         }
         return null;
     }
-    
-    
-    /* public List<SelectItem> selectRolesItems() throws NamingException{
-        Session session = this.hibernateUtils.getSession();
-        List listRole;
-        ArrayList arraylist= new ArrayList();
-        try{
-             listRole = session.createQuery("from role").list();  
-             if(listRole.size()!=0){
-                 for (byte b=0; b<listRole.size(); b++)
-                     arraylist.add(new SelectItem(((Role)listRole.get(b)).getName()));
-             }      
-        }
-        finally{
-            
-        }
-        return arraylist;
-    }
-    */
-    
-    
 }

@@ -67,7 +67,7 @@ public class EmployeePointage  implements java.io.Serializable {
         this.id = id;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="employe_id")
     public Employes getEmployes() {
         return this.employes;

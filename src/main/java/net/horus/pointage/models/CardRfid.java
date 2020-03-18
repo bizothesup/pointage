@@ -58,7 +58,7 @@ public class CardRfid  implements java.io.Serializable {
         this.id = id;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="employe_id", nullable=false)
     public Employes getEmployes() {
         return this.employes;

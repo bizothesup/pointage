@@ -8,7 +8,7 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="employes" class="net.horus.pointage.models.Employes" fetch="select">
+        <many-to-one name="employes" class="net.horus.pointage.models.Employes" fetch="select" lazy="false">
             <column name="employe_id" not-null="true" />
         </many-to-one>
         <property name="isValide" type="string">

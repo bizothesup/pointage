@@ -54,7 +54,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-web-api:7.0" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.47" level="project" />
     <orderEntry type="library" name="Maven: com.github.adminfaces:admin-template:1.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.omnifaces:omnifaces:2.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.adminfaces:admin-theme:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:primefaces:7.0" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces.extensions:primefaces-extensions:6.1.1" level="project" />
@@ -64,5 +63,6 @@
     <orderEntry type="library" name="Maven: com.sun.faces:jsf-api:2.2.12" level="project" />
     <orderEntry type="library" name="Maven: com.sun.faces:jsf-impl:2.2.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.omnifaces:omnifaces:2.7.3" level="project" />
   </component>
 </module>

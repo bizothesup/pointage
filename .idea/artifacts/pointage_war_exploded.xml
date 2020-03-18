@@ -23,7 +23,6 @@
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.47" />
           <element id="library" level="project" name="Maven: com.github.adminfaces:admin-template:1.0.0" />
-          <element id="library" level="project" name="Maven: org.omnifaces:omnifaces:2.1" />
           <element id="library" level="project" name="Maven: com.github.adminfaces:admin-theme:1.0.0" />
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:7.0" />
           <element id="library" level="project" name="Maven: org.primefaces.extensions:primefaces-extensions:6.1.1" />
@@ -32,6 +31,7 @@
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.25.0-GA" />
           <element id="library" level="project" name="Maven: com.sun.faces:jsf-api:2.2.12" />
           <element id="library" level="project" name="Maven: com.sun.faces:jsf-impl:2.2.12" />
+          <element id="library" level="project" name="Maven: org.omnifaces:omnifaces:2.7.3" />
         </element>
       </element>
       <element id="directory" name="META-INF">

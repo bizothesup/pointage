@@ -7,6 +7,7 @@ package net.horus.pointage.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import com.github.adminfaces.template.exception.BusinessException;
 import net.horus.pointage.models.Role;
 import net.horus.pointage.utils.HibernateUtils;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -115,21 +117,24 @@ public class RoleDao  implements Serializable{
     }
     
     
-     public List<SelectItem> selectRolesItems() throws NamingException{
-        Session session = this.hibernateUtils.getSession();
-        List listRole;
-        ArrayList arraylist= new ArrayList();
-        try{
-             listRole = session.createQuery("from "+Role.class.getName()).list();  
-             if(listRole.size()!=0){
-                 for (byte b=0; b<listRole.size(); b++)
-                     arraylist.add(new SelectItem(((Role)listRole.get(b)).getName()));
-             }      
-        }
-        finally{
-            this.hibernateUtils.closeSession();
-        }
-        return arraylist;
+     public List<SelectItem> selectRolesItems() {
+         
+         Session session = null;
+         try {
+             session = this.hibernateUtils.getSession();
+         } catch (NamingException e) {
+             e.printStackTrace();
+         }
+         Query query = session.createQuery("from "+Role.class.getName());
+         List list = query.list();
+         ArrayList arrayList = new ArrayList();
+         if (list.size() != 0)
+             for (Iterator it = list.iterator(); it.hasNext(); ) {
+                 Role srv = (Role) list.get(list.indexOf(it.next()));
+                 arrayList.add(new SelectItem(srv.getId(), srv.getName().toUpperCase()));
+             }
+        this.hibernateUtils.closeSession();
+         return arrayList;
     }
 
     public List<Role> paginate(Filter<Role> filter)  {
@@ -225,6 +230,16 @@ public class RoleDao  implements Serializable{
             e.printStackTrace();
         }
         return null;
+    }
+    public Role selectRoleOne(Integer id) throws NamingException {
+        Session paramSession = this.hibernateUtils.getSession();
+        Query query = paramSession.createQuery(" from "+Role.class.getName()+" where id=:id").setInteger("id",id);
+        query.setMaxResults(1);
+        List list = query.list();
+        Role r = new Role();
+        r = (Role) list.get(0);
+        this.hibernateUtils.closeSession();
+        return r;
     }
 
 

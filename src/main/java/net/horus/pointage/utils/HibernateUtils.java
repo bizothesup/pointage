@@ -29,6 +29,7 @@ public class HibernateUtils {
         Configuration configuration = new Configuration();
         configuration.configure("hibernate.cfg.xml");
         configuration.setProperty("hibernate.hbm2ddl.auto", "none");
+        configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
         System.out.println("***************Mapping des class**********************");
          mappingClass(configuration);
         this.sessionFactory = configuration.buildSessionFactory();

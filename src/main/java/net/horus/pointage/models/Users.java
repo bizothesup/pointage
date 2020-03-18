@@ -56,7 +56,7 @@ public class Users  implements java.io.Serializable {
         this.id = id;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="role_id")
     public Role getRole() {
         return this.role;
@@ -124,6 +124,10 @@ public class Users  implements java.io.Serializable {
     
     public void setIsvalide(Boolean isvalide) {
         this.isvalide = isvalide;
+    }
+
+    public Users findById(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
