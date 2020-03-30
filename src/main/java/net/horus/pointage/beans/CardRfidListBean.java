@@ -20,6 +20,8 @@ import net.horus.pointage.dao.CardRfidDao;
 import net.horus.pointage.dao.UserDao;
 import net.horus.pointage.models.CardRfid;
 import net.horus.pointage.models.Users;
+import net.horus.pointage.utils.Reporting;
+import net.sf.jasperreports.engine.JRException;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -34,6 +36,10 @@ public class CardRfidListBean implements Serializable {
 
     @Inject
     private CardRfidDao cardRfidDao;
+    
+    @Inject 
+    private Reporting rep;
+    
     
     private CardRfid cardRfid;
     private Integer id;
@@ -84,6 +90,10 @@ public class CardRfidListBean implements Serializable {
                 return cardRfidDao.findById(new Integer(key));
             }
         };
+    }
+    
+    public void imprimer() throws JRException{
+        rep.imprimer();
     }
     
    public void findCarByNumCardOrMatEmploye(String numCard) {

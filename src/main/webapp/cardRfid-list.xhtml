@@ -18,6 +18,10 @@
                     <div id="main-buttons" class="hidden-sm hidden-xs">
                         <p:commandButton value="Ajouter" icon="fa fa-plus" action="/role-form?faces-redirect=true" styleClass="btn-primary"/>
                     </div>
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="imprimer" icon="fa fa-plus" action="#{cardRfidListBean.imprimer}" styleClass="btn-primary"/>
+                    </div>
+                    
                     
                     <p:dataTable widgetVar="cardrfidTable" var="c" value="#{cardRfidListBean.cardRfids}" rows="5"
                                  rowKey="#{c.id}" lazy="true" paginator="true"
